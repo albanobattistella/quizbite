@@ -30,8 +30,9 @@
       "buildsystem": "meson",
       "sources": [
         {
-          "type": "dir",
-          "path": "."
+          "type": "git",
+          "url": "https://github.com/mohfy/quizbite.git",
+          "commit": "6faff81a313c519533f271d8510d9a78671b7020"
         }
       ],
       "config-opts": ["--libdir=lib"]
