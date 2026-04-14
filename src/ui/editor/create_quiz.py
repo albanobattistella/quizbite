@@ -265,8 +265,8 @@ class QuizEditorDialog(Adw.Dialog):
         save_quiz(quiz_data)
 
         window = self.get_root()
-        if window and hasattr(window, "load_quizzes"):
-            window.load_quizzes()
+        if window and hasattr(window, "load_library"):
+            window.load_library()
 
         self.close()
 
