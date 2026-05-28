@@ -40,7 +40,6 @@ def build_completion_page(
         review_button = _build_completion_button(
             review_label or _("Review Mistakes"),
             on_review,
-            suggested=True,
         )
         buttons_box.append(review_button)
 
@@ -51,7 +50,11 @@ def build_completion_page(
     )
     buttons_box.append(retry_button)
 
-    home_button = _build_completion_button(_("Back to Library"), on_go_home)
+    home_button = _build_completion_button(
+        _("Back to Library"),
+        on_go_home,
+        suggested=on_review is not None,
+    )
     buttons_box.append(home_button)
 
     status_page.set_child(buttons_box)
