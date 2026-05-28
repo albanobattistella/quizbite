@@ -50,6 +50,7 @@ from .play_flashcard import (
     build_flashcard_quiz,
 )
 from .play_quiz.quiz_player import QuizPlayer
+from .editor import QuizEditorDialog
 from .quiz_library import build_library_row, library_item_matches_query
 from .utils.file_dialogs import (
     build_apkg_file_filter,
@@ -194,6 +195,11 @@ class QuizbiteWindow(Adw.ApplicationWindow):
 
         return [
             {
+                "label": _("Edit Quiz"),
+                "callback": self.on_edit_quiz_clicked,
+                "item": item,
+            },
+            {
                 "label": _("Share Quiz"),
                 "callback": self.on_share_quiz_clicked,
                 "item": item,
@@ -284,6 +290,21 @@ class QuizbiteWindow(Adw.ApplicationWindow):
             self.load_library()
         except Exception as exc:
             self._show_alert(_("Import Failed"), str(exc))
+
+    def on_edit_quiz_clicked(self, _button, item, popover):
+        """Open the editor prefilled with an existing quiz."""
+        popover.popdown()
+
+        quiz_data = get_quiz(item["id"])
+        if quiz_data is None:
+            self._show_alert(
+                _("Edit Failed"),
+                _("Quiz could not be loaded for editing."),
+            )
+            return
+
+        dialog = QuizEditorDialog(quiz_id=item["id"], quiz_data=quiz_data)
+        dialog.present(self)
 
     def _maybe_show_apkg_import_summary(self, import_result: dict) -> None:
         """Show a summary when APKG import had multiple decks or skips."""

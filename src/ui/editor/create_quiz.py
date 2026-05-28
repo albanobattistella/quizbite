@@ -19,7 +19,7 @@
 
 """Quiz editor dialog.
 
-Allows creating a quiz and saving it to the local DB.
+Allows creating or editing a quiz and saving it to the local DB.
 """
 
 from __future__ import annotations
@@ -29,7 +29,7 @@ from gettext import gettext as _
 
 from gi.repository import Adw, GLib, Gtk
 
-from ...data.db import save_quiz
+from ...data.db import save_quiz, update_quiz
 from ..utils.file_dialogs import (
     build_file_dialog,
     build_image_file_filter,
@@ -44,6 +44,7 @@ from .create_quiz_support import (
     create_correct_action,
     create_entry_row,
     find_question_block,
+    load_question_image_payload,
     load_question_image_selection,
     question_block_is_valid,
     serialize_question_block,
@@ -53,22 +54,39 @@ from .create_quiz_support import (
 
 @Gtk.Template(resource_path="/dev/mohfy/quizbite/ui/editor/create_quiz.ui")
 class QuizEditorDialog(Adw.Dialog):
-    """Dialog to create a quiz and persist it."""
+    """Dialog to create or edit a quiz and persist it."""
 
     __gtype_name__ = "QuizEditorDialog"
 
     create_button = Gtk.Template.Child()
+    editor_title = Gtk.Template.Child()
     quiz_editor = Gtk.Template.Child()
     quiz_title = Gtk.Template.Child()
     questions_group = Gtk.Template.Child()
 
-    def __init__(self, **kwargs):
+    def __init__(
+        self,
+        *,
+        quiz_id: int | None = None,
+        quiz_data: dict | None = None,
+        **kwargs,
+    ):
         super().__init__(**kwargs)
 
+        self.quiz_id = quiz_id
         self.create_button.set_sensitive(False)
         self.question_blocks: list[QuestionEditorBlock] = []
 
-        self.on_add_question_clicked(None)
+        if self.quiz_id is not None:
+            self.create_button.set_label(_("Save"))
+            self.editor_title.set_title(_("Edit Quiz"))
+            self.set_title(_("Edit Quiz"))
+
+        if quiz_data is None:
+            self._add_question_block()
+        else:
+            self._load_quiz(quiz_data)
+
         self._update_create_button()
 
     def _dialog_parent(self):
@@ -98,6 +116,10 @@ class QuizEditorDialog(Adw.Dialog):
     @Gtk.Template.Callback()
     def on_add_question_clicked(self, _button):
         """Add a new question editor block."""
+        self._add_question_block()
+
+    def _add_question_block(self, question_data: dict | None = None):
+        """Add a question editor block, optionally prefilled."""
         question_index = len(self.question_blocks) + 1
         group = Adw.PreferencesGroup(
             title=_("Question {number}").format(number=question_index)
@@ -119,7 +141,14 @@ class QuizEditorDialog(Adw.Dialog):
         option_rows: list[Adw.EntryRow] = []
         first_check = None
 
-        for option_index in range(4):
+        option_values = []
+        correct_option_index = None
+        if question_data is not None:
+            option_values, correct_option_index = self._get_question_option_state(
+                question_data
+            )
+
+        for option_index in range(max(4, len(option_values))):
             option_row, option_check = build_option_row(
                 option_index,
                 first_check,
@@ -138,22 +167,95 @@ class QuizEditorDialog(Adw.Dialog):
         remove_button.connect("clicked", self.on_remove_question_clicked, group)
         group.set_header_suffix(remove_button)
 
-        self.quiz_editor.add(group)
-        self.question_blocks.append(
-            QuestionEditorBlock(
-                group=group,
-                question_title=question_title,
-                image_row=image_row,
-                image_preview=image_preview,
-                option_rows=option_rows,
-                correct_action=correct_action,
-                remove_button=remove_button,
-                remove_image_button=remove_image_button,
-            )
+        block = QuestionEditorBlock(
+            group=group,
+            question_title=question_title,
+            image_row=image_row,
+            image_preview=image_preview,
+            option_rows=option_rows,
+            correct_action=correct_action,
+            remove_button=remove_button,
+            remove_image_button=remove_image_button,
         )
+        self.quiz_editor.add(group)
+        self.question_blocks.append(block)
+
+        if question_data is not None:
+            self._populate_question_block(
+                block,
+                question_data,
+                option_values,
+                correct_option_index,
+            )
 
         self._update_question_titles()
         self._update_create_button()
+
+    def _load_quiz(self, quiz_data: dict):
+        """Populate the editor from an existing quiz."""
+        self.quiz_title.set_text(quiz_data.get("title", ""))
+
+        for question in quiz_data.get("questions", []):
+            self._add_question_block(question)
+
+        if not self.question_blocks:
+            self._add_question_block()
+
+    def _populate_question_block(
+        self,
+        block: QuestionEditorBlock,
+        question_data: dict,
+        option_values: list[str],
+        correct_option_index: int | None,
+    ):
+        """Fill a question block from stored quiz data."""
+        block.question_title.set_text(
+            question_data.get("question") or question_data.get("title") or ""
+        )
+
+        for option_row, option_text in zip(block.option_rows, option_values):
+            option_row.set_text(option_text)
+
+        if correct_option_index is not None and (
+            0 <= correct_option_index < len(block.option_rows)
+        ):
+            block.correct_action.set_state(
+                GLib.Variant.new_string(str(correct_option_index))
+            )
+
+        image_payload = question_data.get("image")
+        if image_payload is not None:
+            try:
+                image = load_question_image_payload(image_payload)
+            except ValueError as error:
+                block.image_row.set_subtitle(str(error))
+            else:
+                set_question_block_image(block, image)
+
+    def _get_question_option_state(
+        self,
+        question_data: dict,
+    ) -> tuple[list[str], int | None]:
+        """Return option labels and the selected correct index for a question."""
+        option_rows = question_data.get("options", [])
+        if not option_rows:
+            return [], None
+
+        if isinstance(option_rows[0], dict):
+            option_values = []
+            correct_option_index = None
+            for option_index, option in enumerate(option_rows):
+                option_values.append(option.get("text", ""))
+                if option.get("is_correct"):
+                    correct_option_index = option_index
+
+            return option_values, correct_option_index
+
+        correct_option_index = question_data.get("correct_index")
+        if not isinstance(correct_option_index, int):
+            correct_option_index = None
+
+        return list(option_rows), correct_option_index
 
     def on_remove_question_clicked(self, _button, group):
         """Remove a question block, if more than one exists."""
@@ -251,7 +353,7 @@ class QuizEditorDialog(Adw.Dialog):
         return all(question_block_is_valid(block) for block in self.question_blocks)
 
     def _update_create_button(self):
-        """Enable or disable the Create button."""
+        """Enable or disable the primary editor button."""
         self.create_button.set_sensitive(self._quiz_is_valid())
 
     @Gtk.Template.Callback()
@@ -262,7 +364,14 @@ class QuizEditorDialog(Adw.Dialog):
             "questions": [serialize_question_block(block) for block in self.question_blocks],
         }
 
-        save_quiz(quiz_data)
+        if self.quiz_id is None:
+            save_quiz(quiz_data)
+        elif not update_quiz(self.quiz_id, quiz_data):
+            self._show_alert(
+                _("Save Failed"),
+                _("Quiz could not be loaded for editing."),
+            )
+            return
 
         window = self.get_root()
         if window and hasattr(window, "load_library"):

@@ -58,37 +58,72 @@ def save_quiz(quiz_data: dict) -> int:
             }
         )
 
-        for question_index, question in enumerate(quiz_data["questions"]):
-            question_record = {
-                "quiz_id": quiz_id,
-                "position": question_index,
-                "title": question["question"],
-            }
-            question_image = question.get("image")
-            if question_image is not None:
-                question_record.update(
-                    {
-                        "image_filename": question_image["filename"],
-                        "image_media_type": question_image["media_type"],
-                        "image_data": question_image["data"],
-                    }
-                )
-
-            question_id = tx["questions"].insert(
-                question_record
-            )
-
-            for option_index, option_text in enumerate(question["options"]):
-                tx["options"].insert(
-                    {
-                        "question_id": question_id,
-                        "position": option_index,
-                        "text": option_text,
-                        "is_correct": option_index == question["correct_index"],
-                    }
-                )
+        _insert_quiz_questions(tx, quiz_id, quiz_data["questions"])
 
     return quiz_id
+
+
+def update_quiz(quiz_id: int, quiz_data: dict) -> bool:
+    """Replace a quiz title and questions while preserving its id."""
+    db = get_db()
+
+    with db as tx:
+        if tx["quizzes"].find_one(id=quiz_id) is None:
+            return False
+
+        tx["quizzes"].update(
+            {
+                "id": quiz_id,
+                "title": quiz_data["title"],
+            },
+            ["id"],
+        )
+        _delete_quiz_questions(tx, quiz_id)
+        _insert_quiz_questions(tx, quiz_id, quiz_data["questions"])
+
+    return True
+
+
+def _insert_quiz_questions(tx, quiz_id: int, questions: list[dict]) -> None:
+    """Insert question and option rows for an existing quiz row."""
+    for question_index, question in enumerate(questions):
+        question_record = {
+            "quiz_id": quiz_id,
+            "position": question_index,
+            "title": question["question"],
+        }
+        question_image = question.get("image")
+        if question_image is not None:
+            question_record.update(
+                {
+                    "image_filename": question_image["filename"],
+                    "image_media_type": question_image["media_type"],
+                    "image_data": question_image["data"],
+                }
+            )
+
+        question_id = tx["questions"].insert(question_record)
+
+        for option_index, option_text in enumerate(question["options"]):
+            tx["options"].insert(
+                {
+                    "question_id": question_id,
+                    "position": option_index,
+                    "text": option_text,
+                    "is_correct": option_index == question["correct_index"],
+                }
+            )
+
+
+def _delete_quiz_questions(tx, quiz_id: int) -> None:
+    """Delete question and option rows for a quiz."""
+    question_rows = list(tx["questions"].find(quiz_id=quiz_id))
+    question_ids = [question["id"] for question in question_rows]
+
+    for question_id in question_ids:
+        tx["options"].delete(question_id=question_id)
+
+    tx["questions"].delete(quiz_id=quiz_id)
 
 
 def save_flashcard_deck(deck_data: dict) -> int:
@@ -360,13 +395,7 @@ def delete_quiz(quiz_id: int) -> None:
     db = get_db()
 
     with db as tx:
-        question_rows = list(tx["questions"].find(quiz_id=quiz_id))
-        question_ids = [question["id"] for question in question_rows]
-
-        for question_id in question_ids:
-            tx["options"].delete(question_id=question_id)
-
-        tx["questions"].delete(quiz_id=quiz_id)
+        _delete_quiz_questions(tx, quiz_id)
         tx["quizzes"].delete(id=quiz_id)
 
 
