@@ -49,6 +49,7 @@ class QuizPlayer:
         self.quiz_question_view = None
         self.quiz_session: QuizSession | None = None
         self.score_page = None
+        self.review_page = None
         self.image_dialog: Adw.Dialog | None = None
 
     def _require_session(self) -> QuizSession:
@@ -94,6 +95,7 @@ class QuizPlayer:
         self.quiz_page_progress = None
         self.quiz_question_view = None
         self.quiz_session = None
+        self.review_page = None
 
     def _return_to_root_page(self) -> None:
         """Return the UI to the library page."""
@@ -320,7 +322,12 @@ class QuizPlayer:
         picture.set_valign(Gtk.Align.FILL)
         return picture
 
-    def _build_question_image_widget(self, question: dict) -> Gtk.Widget | None:
+    def _build_question_image_widget(
+        self,
+        question: dict,
+        *,
+        height: int = 260,
+    ) -> Gtk.Widget | None:
         """Build an image button when the question has an image."""
         question_image = question.get("image")
         if question_image is None:
@@ -341,7 +348,7 @@ class QuizPlayer:
         image_button.set_halign(Gtk.Align.FILL)
         image_button.set_tooltip_text(_("Open image"))
         image_button.set_child(
-            self._build_question_image_surface(texture, height=260)
+            self._build_question_image_surface(texture, height=height)
         )
         image_button.connect(
             "clicked",
@@ -484,8 +491,252 @@ class QuizPlayer:
             total_questions=total_questions,
             on_retry=partial(self.on_retry_clicked, quiz_data=session.quiz),
             on_go_home=self.on_go_home_clicked,
+            on_review=self.on_review_mistakes_clicked,
         )
         self.navigation_view.push(self.score_page)
+
+    def on_review_mistakes_clicked(self, _button) -> None:
+        """Show the ordered answer review page."""
+        session = self._require_session()
+        self.review_page = self._build_review_page(session)
+        self.navigation_view.push(self.review_page)
+
+    def _build_review_page(self, session: QuizSession) -> Adw.NavigationPage:
+        """Build a scrollable review with missed answers first."""
+        toolbar_view = Adw.ToolbarView()
+        toolbar_view.add_top_bar(Adw.HeaderBar())
+
+        review_list = Gtk.ListBox(
+            selection_mode=Gtk.SelectionMode.NONE,
+            margin_top=18,
+            margin_bottom=18,
+            margin_start=18,
+            margin_end=18,
+        )
+        review_list.add_css_class("boxed-list")
+        review_list.set_hexpand(True)
+        total_questions = len(session.quiz["questions"])
+
+        for (
+            question_index,
+            question,
+            selected_index,
+            is_correct,
+        ) in self._build_ordered_review_items(session):
+            row = Gtk.ListBoxRow(
+                activatable=False,
+                selectable=False,
+            )
+            row.set_child(
+                self._build_review_question(
+                    question_index,
+                    total_questions,
+                    question,
+                    selected_index,
+                    is_correct,
+                )
+            )
+            review_list.append(row)
+
+        clamp = Adw.Clamp(maximum_size=720, tightening_threshold=480)
+        clamp.set_child(review_list)
+
+        scrolled_window = Gtk.ScrolledWindow()
+        scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scrolled_window.set_vexpand(True)
+        scrolled_window.set_child(clamp)
+
+        toolbar_view.set_content(scrolled_window)
+        return Adw.NavigationPage.new(toolbar_view, _("Review Mistakes"))
+
+    def _build_ordered_review_items(
+        self,
+        session: QuizSession,
+    ) -> list[tuple[int, dict, int | None, bool]]:
+        """Return wrong or unanswered questions before correct questions."""
+        missed_items = []
+        correct_items = []
+
+        for question_index, (question, selected_index) in enumerate(
+            zip(session.quiz["questions"], session.selected_answers)
+        ):
+            is_correct = self._is_selected_answer_correct(question, selected_index)
+            item = (question_index, question, selected_index, is_correct)
+            if is_correct:
+                correct_items.append(item)
+            else:
+                missed_items.append(item)
+
+        return missed_items + correct_items
+
+    def _build_review_question(
+        self,
+        question_index: int,
+        total_questions: int,
+        question: dict,
+        selected_index: int | None,
+        is_correct: bool,
+    ) -> Gtk.Widget:
+        """Build one quiz-like review item."""
+        question_box = Gtk.Box(
+            orientation=Gtk.Orientation.VERTICAL,
+            spacing=18,
+            margin_top=24,
+            margin_bottom=24,
+            margin_start=32,
+            margin_end=32,
+        )
+        question_box.set_hexpand(True)
+        question_box.set_halign(Gtk.Align.FILL)
+
+        header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+
+        section_label = Gtk.Label(
+            label=_("Question {current} of {total}").format(
+                current=question_index + 1,
+                total=total_questions,
+            ),
+            xalign=0,
+        )
+        section_label.add_css_class("caption-heading")
+        section_label.set_hexpand(True)
+        header_box.append(section_label)
+
+        status_icon = self._build_review_status_icon(selected_index, is_correct)
+        header_box.append(status_icon)
+        question_box.append(header_box)
+
+        question_label = Gtk.Label(label=question["title"], wrap=True, xalign=0)
+        question_label.add_css_class("title-2")
+        question_box.append(question_label)
+
+        question_image = self._build_question_image_widget(question, height=180)
+        if question_image is not None:
+            question_box.append(question_image)
+
+        options_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        question_box.append(options_box)
+
+        first_check = None
+        for option_index, option in enumerate(question["options"]):
+            option_check = self._build_review_option_check(
+                option=option,
+                option_index=option_index,
+                selected_index=selected_index,
+                first_check=first_check,
+            )
+            if first_check is None:
+                first_check = option_check
+
+            options_box.append(option_check)
+
+        return question_box
+
+    def _build_review_status_icon(
+        self,
+        selected_index: int | None,
+        is_correct: bool,
+    ) -> Gtk.Image:
+        """Build the compact correctness icon for a review question."""
+        status_icon = Gtk.Image.new_from_icon_name(
+            "object-select-symbolic" if is_correct else "window-close-symbolic"
+        )
+        status_icon.add_css_class("success" if is_correct else "error")
+        status_icon.set_tooltip_text(
+            self._format_review_status(selected_index, is_correct)
+        )
+        return status_icon
+
+    def _build_review_option_check(
+        self,
+        *,
+        option: dict,
+        option_index: int,
+        selected_index: int | None,
+        first_check: Gtk.CheckButton | None,
+    ) -> Gtk.CheckButton:
+        """Build a noninteractive option row for review."""
+        option_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        option_box.set_margin_start(8)
+        option_box.set_hexpand(True)
+
+        option_label = Gtk.Label(label=option["text"], wrap=True, xalign=0)
+        option_label.set_hexpand(True)
+        option_box.append(option_label)
+
+        option_status = self._format_review_option_status(
+            option,
+            option_index,
+            selected_index,
+        )
+        if option_status is not None:
+            status_label = Gtk.Label(label=option_status, wrap=True, xalign=0)
+            status_label.add_css_class("caption")
+            status_label.add_css_class("dim-label")
+            option_box.append(status_label)
+
+        option_check = Gtk.CheckButton()
+        option_check.set_halign(Gtk.Align.FILL)
+        option_check.set_hexpand(True)
+        option_check.set_child(option_box)
+        option_check.set_active(option_index == selected_index)
+        option_check.set_can_target(False)
+        option_check.set_focusable(False)
+
+        if first_check is not None:
+            option_check.set_group(first_check)
+
+        return option_check
+
+    def _format_review_option_status(
+        self,
+        option: dict,
+        option_index: int,
+        selected_index: int | None,
+    ) -> str | None:
+        """Return the review label for an option."""
+        is_selected = option_index == selected_index
+        is_correct = option["is_correct"]
+
+        if is_selected and is_correct:
+            return _("Your answer, correct")
+
+        if is_selected:
+            return _("Your answer")
+
+        if is_correct:
+            return _("Correct answer")
+
+        return None
+
+    def _format_review_status(
+        self,
+        selected_index: int | None,
+        is_correct: bool,
+    ) -> str:
+        """Return the compact review status label."""
+        if is_correct:
+            return _("Correct")
+
+        if selected_index is None:
+            return _("Not answered")
+
+        return _("Wrong")
+
+    def _is_selected_answer_correct(
+        self,
+        question: dict,
+        selected_index: int | None,
+    ) -> bool:
+        """Return whether the selected answer is correct."""
+        if selected_index is None:
+            return False
+
+        options = question["options"]
+        if not 0 <= selected_index < len(options):
+            return False
+
+        return bool(options[selected_index]["is_correct"])
 
     def on_retry_clicked(self, _button, *, quiz_data: dict | None = None) -> None:
         """Restart the same quiz."""
