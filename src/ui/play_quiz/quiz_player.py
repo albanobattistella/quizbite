@@ -656,30 +656,33 @@ class QuizPlayer:
         first_check: Gtk.CheckButton | None,
     ) -> Gtk.CheckButton:
         """Build a noninteractive option row for review."""
-        option_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        option_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         option_box.set_margin_start(8)
         option_box.set_hexpand(True)
+        option_box.set_halign(Gtk.Align.START)
 
         option_label = Gtk.Label(label=option["text"], wrap=True, xalign=0)
-        option_label.set_hexpand(True)
         option_box.append(option_label)
 
-        option_status = self._format_review_option_status(
-            option,
-            option_index,
-            selected_index,
-        )
-        if option_status is not None:
-            status_label = Gtk.Label(label=option_status, wrap=True, xalign=0)
-            status_label.add_css_class("caption")
-            status_label.add_css_class("dim-label")
-            option_box.append(status_label)
+        is_selected = option_index == selected_index
+        is_correct = option["is_correct"]
+
+        if is_correct:
+            status_icon = Gtk.Image.new_from_icon_name("object-select-symbolic")
+            status_icon.add_css_class("success")
+            status_icon.set_tooltip_text(_("Correct"))
+            option_box.append(status_icon)
+        elif is_selected:
+            status_icon = Gtk.Image.new_from_icon_name("window-close-symbolic")
+            status_icon.add_css_class("error")
+            status_icon.set_tooltip_text(_("Wrong"))
+            option_box.append(status_icon)
 
         option_check = Gtk.CheckButton()
         option_check.set_halign(Gtk.Align.FILL)
         option_check.set_hexpand(True)
         option_check.set_child(option_box)
-        option_check.set_active(option_index == selected_index)
+        option_check.set_active(is_selected)
         option_check.set_can_target(False)
         option_check.set_focusable(False)
 
@@ -687,27 +690,6 @@ class QuizPlayer:
             option_check.set_group(first_check)
 
         return option_check
-
-    def _format_review_option_status(
-        self,
-        option: dict,
-        option_index: int,
-        selected_index: int | None,
-    ) -> str | None:
-        """Return the review label for an option."""
-        is_selected = option_index == selected_index
-        is_correct = option["is_correct"]
-
-        if is_selected and is_correct:
-            return _("Your answer, correct")
-
-        if is_selected:
-            return _("Your answer")
-
-        if is_correct:
-            return _("Correct answer")
-
-        return None
 
     def _format_review_status(
         self,
