@@ -50,7 +50,7 @@ from .play_flashcard import (
     build_flashcard_quiz,
 )
 from .play_quiz.quiz_player import QuizPlayer
-from .quiz_library import build_library_row
+from .quiz_library import build_library_row, library_item_matches_query
 from .utils.file_dialogs import (
     build_apkg_file_filter,
     build_file_dialog,
@@ -71,17 +71,22 @@ class QuizbiteWindow(Adw.ApplicationWindow):
     navigation_view = Gtk.Template.Child()
     quiz_status = Gtk.Template.Child()
     empty_page = Gtk.Template.Child()
-    quiz_list_clamp = Gtk.Template.Child()
+    library_page = Gtk.Template.Child()
+    quiz_search = Gtk.Template.Child()
+    library_results = Gtk.Template.Child()
+    quiz_scrolled_window = Gtk.Template.Child()
+    no_results_page = Gtk.Template.Child()
     quiz_list = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.library_rows: list[Adw.ActionRow] = []
+        self.library_rows: list[tuple[Adw.ActionRow, dict]] = []
         self.flashcard_mode_page: Adw.NavigationPage | None = None
 
         self.quiz_player = QuizPlayer(self.navigation_view)
         self.flashcard_match_player = FlashcardMatchPlayer(self.navigation_view)
 
+        self.quiz_search.connect("search-changed", self.on_quiz_search_changed)
         self.load_library()
 
     def _finish_file_dialog(self, result, finish_method, error_title: str):
@@ -123,11 +128,12 @@ class QuizbiteWindow(Adw.ApplicationWindow):
         """Reload the mixed study library from the database."""
         items = get_library_items()
 
-        for row in self.library_rows:
+        for row, _item in self.library_rows:
             self.quiz_list.remove(row)
         self.library_rows.clear()
 
         if not items:
+            self.quiz_search.set_text("")
             self.quiz_status.set_visible_child(self.empty_page)
             return
 
@@ -138,9 +144,31 @@ class QuizbiteWindow(Adw.ApplicationWindow):
                 self._build_menu_actions(item),
             )
             self.quiz_list.add(row)
-            self.library_rows.append(row)
+            self.library_rows.append((row, item))
 
-        self.quiz_status.set_visible_child(self.quiz_list_clamp)
+        self.quiz_status.set_visible_child(self.library_page)
+        self._filter_library_rows()
+
+    def on_quiz_search_changed(self, _search_entry):
+        """Filter the library list as the search text changes."""
+        self._filter_library_rows()
+
+    def _filter_library_rows(self):
+        """Show rows matching the current library search query."""
+        query = self.quiz_search.get_text()
+        visible_count = 0
+
+        for row, item in self.library_rows:
+            is_match = library_item_matches_query(item, query)
+            row.set_visible(is_match)
+            if is_match:
+                visible_count += 1
+
+        if visible_count == 0 and query.strip():
+            self.library_results.set_visible_child(self.no_results_page)
+            return
+
+        self.library_results.set_visible_child(self.quiz_scrolled_window)
 
     def _build_menu_actions(self, item: dict) -> list[dict]:
         """Return the per-item menu actions for a library row."""

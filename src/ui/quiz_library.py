@@ -93,3 +93,24 @@ def format_library_item_subtitle(item: dict) -> str:
         type_label = _("Quiz")
 
     return _("{count} • {type}").format(count=count_label, type=type_label)
+
+
+def library_item_matches_query(item: dict, query: str) -> bool:
+    """Return whether a library item should be visible for a search query."""
+    terms = query.casefold().split()
+    if not terms:
+        return True
+
+    search_text = _build_library_item_search_text(item).casefold()
+    return all(term in search_text for term in terms)
+
+
+def _build_library_item_search_text(item: dict) -> str:
+    """Build the normalized text used for library search matching."""
+    return " ".join(
+        (
+            item["title"],
+            item["item_type"],
+            format_library_item_subtitle(item),
+        )
+    )
