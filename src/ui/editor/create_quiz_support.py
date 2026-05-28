@@ -7,6 +7,7 @@ Keeps widget wiring and serialization in one place.
 from __future__ import annotations
 
 import base64
+import binascii
 from collections.abc import Callable
 from dataclasses import dataclass
 from gettext import gettext as _
@@ -150,6 +151,22 @@ def load_question_image_selection(path: str | Path) -> QuestionImageSelection:
         filename=image_path.name,
         media_type=content_type,
         data=base64.b64encode(image_bytes).decode("ascii"),
+        texture=texture,
+    )
+
+
+def load_question_image_payload(payload: dict) -> QuestionImageSelection:
+    """Build an image selection from a stored question image payload."""
+    try:
+        image_bytes = base64.b64decode(payload["data"], validate=True)
+        texture = Gdk.Texture.new_from_bytes(GLib.Bytes.new(image_bytes))
+    except (KeyError, binascii.Error, ValueError, GLib.Error) as error:
+        raise ValueError(_("Stored question image could not be loaded.")) from error
+
+    return QuestionImageSelection(
+        filename=payload.get("filename") or _("Question Image"),
+        media_type=payload.get("media_type") or "image/png",
+        data=payload["data"],
         texture=texture,
     )
 
