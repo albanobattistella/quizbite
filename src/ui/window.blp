@@ -65,10 +65,46 @@ template $QuizbiteWindow: Adw.ApplicationWindow {
             };
           }
 
-          Adw.Clamp quiz_list_clamp {
-            child: Adw.PreferencesGroup quiz_list {
-              title: _("Library");
-            };
+          Gtk.Box library_page {
+            orientation: vertical;
+            spacing: 12;
+            vexpand: true;
+
+            Adw.Clamp {
+              margin-top: 12;
+              margin-start: 12;
+              margin-end: 12;
+
+              child: Gtk.SearchEntry quiz_search {
+                placeholder-text: _("Search Library");
+              };
+            }
+
+            Gtk.Stack library_results {
+              vexpand: true;
+
+              Gtk.ScrolledWindow quiz_scrolled_window {
+                vexpand: true;
+                hscrollbar-policy: never;
+
+                child: Adw.Clamp {
+                  margin-bottom: 24;
+                  margin-start: 12;
+                  margin-end: 12;
+
+                  child: Adw.PreferencesGroup quiz_list {
+                    title: _("Library");
+                  };
+                };
+              }
+
+              Adw.StatusPage no_results_page {
+                title: _("No Matching Study Sets");
+                description: _("Try a different search.");
+                icon-name: "edit-find-symbolic";
+                vexpand: true;
+              }
+            }
           }
         };
       };
