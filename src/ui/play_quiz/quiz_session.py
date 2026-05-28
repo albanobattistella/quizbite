@@ -6,6 +6,7 @@ Provides small GTK action helpers for the UI.
 
 from __future__ import annotations
 
+import random
 from dataclasses import dataclass, field
 
 from gi.repository import Adw, Gio, GLib, Gtk
@@ -19,6 +20,21 @@ class QuizSession:
     quiz: dict
     selected_answers: list[int | None]
     question_pages: list[Adw.NavigationPage] = field(default_factory=list)
+
+
+def build_randomized_quiz(quiz: dict) -> dict:
+    """Return a quiz copy with questions and options in random order."""
+    randomized_quiz = dict(quiz)
+    randomized_questions = []
+
+    for question in random.sample(quiz["questions"], len(quiz["questions"])):
+        randomized_question = dict(question)
+        options = question["options"]
+        randomized_question["options"] = random.sample(options, len(options))
+        randomized_questions.append(randomized_question)
+
+    randomized_quiz["questions"] = randomized_questions
+    return randomized_quiz
 
 
 def create_answer_action(

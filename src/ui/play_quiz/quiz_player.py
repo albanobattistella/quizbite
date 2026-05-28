@@ -15,6 +15,7 @@ from gi.repository import Adw, Gdk, GLib, Gtk
 from .quiz_session import (
     QuizSession,
     build_option_check_button,
+    build_randomized_quiz,
     calculate_score,
     create_action_group,
     create_answer_action,
@@ -63,13 +64,14 @@ class QuizPlayer:
         self._close_image_dialog()
         self._return_to_root_page()
         self._reset_quiz_state()
+        randomized_quiz = build_randomized_quiz(quiz_data)
         self.quiz_session = QuizSession(
-            quiz=quiz_data,
-            selected_answers=[None] * len(quiz_data["questions"]),
+            quiz=randomized_quiz,
+            selected_answers=[None] * len(randomized_quiz["questions"]),
         )
         self.quiz_page = Adw.NavigationPage.new(
-            self._build_quiz_shell(quiz_data),
-            quiz_data["title"],
+            self._build_quiz_shell(randomized_quiz),
+            randomized_quiz["title"],
         )
         self.navigation_view.push(self.quiz_page)
 
