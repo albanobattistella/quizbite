@@ -16,6 +16,8 @@ def build_completion_page(
     on_go_home: Callable,
     icon_name: str = "face-smile-symbolic",
     retry_label: str | None = None,
+    on_review: Callable | None = None,
+    review_label: str | None = None,
 ) -> Adw.NavigationPage:
     """Build a navigation page for a finished study session."""
     toolbar_view = Adw.ToolbarView()
@@ -29,19 +31,27 @@ def build_completion_page(
         description=description,
     )
 
-    buttons_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+    buttons_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
     buttons_box.set_halign(Gtk.Align.CENTER)
     buttons_box.set_margin_top(24)
+    buttons_box.set_size_request(220, -1)
 
-    retry_button = Gtk.Button(label=retry_label or _("Try Again"))
-    retry_button.add_css_class("pill")
-    retry_button.add_css_class("suggested-action")
-    retry_button.connect("clicked", on_retry)
+    if on_review is not None:
+        review_button = _build_completion_button(
+            review_label or _("Review Mistakes"),
+            on_review,
+            suggested=True,
+        )
+        buttons_box.append(review_button)
+
+    retry_button = _build_completion_button(
+        retry_label or _("Try Again"),
+        on_retry,
+        suggested=on_review is None,
+    )
     buttons_box.append(retry_button)
 
-    home_button = Gtk.Button(label=_("Back to Library"))
-    home_button.add_css_class("pill")
-    home_button.connect("clicked", on_go_home)
+    home_button = _build_completion_button(_("Back to Library"), on_go_home)
     buttons_box.append(home_button)
 
     status_page.set_child(buttons_box)
@@ -52,11 +62,29 @@ def build_completion_page(
     return score_page
 
 
+def _build_completion_button(
+    label: str,
+    on_click: Callable,
+    *,
+    suggested: bool = False,
+) -> Gtk.Button:
+    """Build a stacked completion-page button."""
+    button = Gtk.Button(label=label)
+    button.add_css_class("pill")
+    button.set_halign(Gtk.Align.FILL)
+    button.set_hexpand(True)
+    if suggested:
+        button.add_css_class("suggested-action")
+    button.connect("clicked", on_click)
+    return button
+
+
 def build_score_page(
     score: int,
     total_questions: int,
     on_retry: Callable,
     on_go_home: Callable,
+    on_review: Callable | None = None,
 ) -> Adw.NavigationPage:
     """Build a navigation page for the final quiz score."""
     passed_quiz = score / total_questions >= 0.5
@@ -71,5 +99,6 @@ def build_score_page(
         on_retry=on_retry,
         on_go_home=on_go_home,
         icon_name="face-smile-symbolic" if passed_quiz else "face-sad-symbolic",
+        on_review=on_review if score < total_questions else None,
     )
     return score_page
