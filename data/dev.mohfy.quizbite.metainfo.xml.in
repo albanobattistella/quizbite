@@ -61,7 +61,16 @@
   </branding>
 
   <releases>
-  <release version="2.0.0" date="2026-05-28">
+    <release version="2.0.0" date="2026-05-28">
+    <description>
+      <p>- Added search in Quiz Library #3 #4 </p>
+<p>- fixed not being able to scroll in Quiz library #3 #4</p>
+<p>- Randomize questions and options order #5</p>
+<p>- Added ability to Review Mistakes after finishing a quiz #6</p>
+<p>- Added quiz editing after creation #7</p>
+    </description>
+  </release>
+  <release version="1.5.1" date="2026-04-14">
     <description>
       <p>Added Italian Translation (@albanobattistella)</p>
     </description>
