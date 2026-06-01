@@ -45,6 +45,7 @@ def build_item_menu_button(
                 action["callback"],
                 action["item"],
                 popover,
+                icon_name=action.get("icon_name"),
                 destructive=action.get("destructive", False),
             )
         )
@@ -58,20 +59,37 @@ def build_menu_item_button(
     label: str,
     callback: Callable,
     *args,
+    icon_name: str | None = None,
     destructive: bool = False,
 ) -> Gtk.Button:
     """Build a menu-like button for a popover list."""
-    button = Gtk.Button(label=label)
+    button = Gtk.Button()
     button.set_halign(Gtk.Align.FILL)
     button.set_hexpand(True)
     button.set_has_frame(False)
     button.add_css_class("menuitem")
+
+    button.set_child(build_menu_item_content(label, icon_name))
 
     if destructive:
         button.add_css_class("destructive-action")
 
     button.connect("clicked", callback, *args)
     return button
+
+
+def build_menu_item_content(label: str, icon_name: str | None) -> Gtk.Box:
+    """Build the visible icon and label content for a popover item."""
+    content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+    content.set_halign(Gtk.Align.START)
+
+    if icon_name is not None:
+        content.append(Gtk.Image(icon_name=icon_name))
+
+    item_label = Gtk.Label(label=label)
+    item_label.set_xalign(0)
+    content.append(item_label)
+    return content
 
 
 def format_library_item_subtitle(item: dict) -> str:

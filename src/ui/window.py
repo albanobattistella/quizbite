@@ -177,16 +177,19 @@ class QuizbiteWindow(Adw.ApplicationWindow):
             return [
                 {
                     "label": _("Export APKG"),
+                    "icon_name": "package-x-generic-symbolic",
                     "callback": self.on_export_flashcard_package_clicked,
                     "item": item,
                 },
                 {
                     "label": _("Export PDF"),
+                    "icon_name": "document-save-as-symbolic",
                     "callback": self.on_export_flashcard_pdf_clicked,
                     "item": item,
                 },
                 {
                     "label": _("Delete Flashcards"),
+                    "icon_name": "user-trash-symbolic",
                     "callback": self.on_delete_flashcard_clicked,
                     "item": item,
                     "destructive": True,
@@ -196,21 +199,25 @@ class QuizbiteWindow(Adw.ApplicationWindow):
         return [
             {
                 "label": _("Edit Quiz"),
+                "icon_name": "document-edit-symbolic",
                 "callback": self.on_edit_quiz_clicked,
                 "item": item,
             },
             {
                 "label": _("Share Quiz"),
+                "icon_name": "document-send-symbolic",
                 "callback": self.on_share_quiz_clicked,
                 "item": item,
             },
             {
                 "label": _("Export PDF"),
+                "icon_name": "document-save-as-symbolic",
                 "callback": self.on_export_quiz_clicked,
                 "item": item,
             },
             {
                 "label": _("Delete Quiz"),
+                "icon_name": "user-trash-symbolic",
                 "callback": self.on_delete_quiz_clicked,
                 "item": item,
                 "destructive": True,

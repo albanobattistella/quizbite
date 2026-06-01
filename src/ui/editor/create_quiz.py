@@ -62,7 +62,6 @@ class QuizEditorDialog(Adw.Dialog):
     editor_title = Gtk.Template.Child()
     quiz_editor = Gtk.Template.Child()
     quiz_title = Gtk.Template.Child()
-    questions_group = Gtk.Template.Child()
 
     def __init__(
         self,
@@ -177,7 +176,7 @@ class QuizEditorDialog(Adw.Dialog):
             remove_button=remove_button,
             remove_image_button=remove_image_button,
         )
-        self.quiz_editor.add(group)
+        self.quiz_editor.append(group)
         self.question_blocks.append(block)
 
         if question_data is not None:
@@ -377,8 +376,4 @@ class QuizEditorDialog(Adw.Dialog):
         if window and hasattr(window, "load_library"):
             window.load_library()
 
-        self.close()
-
-    @Gtk.Template.Callback()
-    def on_cancel_clicked(self, *_args):
         self.close()
