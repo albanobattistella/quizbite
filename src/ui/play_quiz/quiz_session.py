@@ -9,7 +9,7 @@ from __future__ import annotations
 import random
 from dataclasses import dataclass, field
 
-from gi.repository import Adw, Gio, GLib, Gtk
+from gi.repository import Adw, Gio, GLib, Gtk, Pango
 
 UNANSWERED_OPTION = ""
 
@@ -66,10 +66,16 @@ def build_option_check_button(
 ) -> Gtk.CheckButton:
     """Build a check button wired to the answer action."""
     option_label = Gtk.Label(label=option_text, xalign=0)
+    option_label.set_halign(Gtk.Align.FILL)
+    option_label.set_hexpand(True)
     option_label.set_margin_start(8)
+    option_label.set_wrap(True)
+    option_label.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
 
     option_check = Gtk.CheckButton()
-    option_check.set_halign(Gtk.Align.START)
+    option_check.set_halign(Gtk.Align.FILL)
+    option_check.set_hexpand(True)
+    option_check.set_valign(Gtk.Align.START)
     option_check.set_child(option_label)
     option_check.set_action_name("question.select-answer")
     option_check.set_action_target_value(GLib.Variant.new_string(str(option_index)))

@@ -16,8 +16,8 @@ from ..play_quiz.score_view import build_completion_page
 MATCH_CARD_CSS = """
 .match-card-button {
   padding: 0;
-  min-width: 148px;
-  min-height: 112px;
+  min-width: 124px;
+  min-height: 108px;
 }
 
 .match-card-surface {
@@ -50,6 +50,11 @@ NEXT_BATCH_DELAY_MS = 320
 COMPACT_PAIRS_PER_SCREEN = 4
 DEFAULT_PAIRS_PER_SCREEN = 6
 WIDE_PAIRS_PER_SCREEN = 8
+COMPACT_MATCH_WIDTH = 420
+MEDIUM_MATCH_WIDTH = 760
+COMPACT_MATCH_COLUMNS = 2
+MEDIUM_MATCH_COLUMNS = 3
+DEFAULT_MATCH_COLUMNS = 4
 
 
 @dataclass(slots=True)
@@ -63,6 +68,40 @@ class MatchCardItem:
     image: dict | None
     button: Gtk.Button
     matched: bool = False
+
+
+class ResponsiveMatchFlowBox(Gtk.FlowBox):
+    """Match grid that reduces its column count on narrow screens."""
+
+    __gtype_name__ = "QuizbiteResponsiveMatchFlowBox"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._columns = 0
+
+    def do_size_allocate(self, width: int, height: int, baseline: int) -> None:
+        """Update column count before GTK allocates the match cards."""
+        self._update_columns(width)
+        super().do_size_allocate(width, height, baseline)
+
+    def _update_columns(self, width: int) -> None:
+        if width <= 0:
+            return
+
+        if width <= COMPACT_MATCH_WIDTH:
+            columns = COMPACT_MATCH_COLUMNS
+        elif width <= MEDIUM_MATCH_WIDTH:
+            columns = MEDIUM_MATCH_COLUMNS
+        else:
+            columns = DEFAULT_MATCH_COLUMNS
+
+        if columns == self._columns:
+            return
+
+        self._columns = columns
+        self.set_min_children_per_line(columns)
+        self.set_max_children_per_line(columns)
+        self.queue_resize()
 
 
 class FlashcardMatchPlayer:
@@ -151,17 +190,29 @@ class FlashcardMatchPlayer:
         self.progress_bar.set_show_text(False)
         content_box.append(self.progress_bar)
 
-        self.flow_box = Gtk.FlowBox()
+        self.flow_box = ResponsiveMatchFlowBox()
         self.flow_box.set_selection_mode(Gtk.SelectionMode.NONE)
         self.flow_box.set_activate_on_single_click(False)
         self.flow_box.set_column_spacing(10)
         self.flow_box.set_row_spacing(10)
-        self.flow_box.set_min_children_per_line(4)
-        self.flow_box.set_max_children_per_line(4)
+        self.flow_box.set_min_children_per_line(COMPACT_MATCH_COLUMNS)
+        self.flow_box.set_max_children_per_line(DEFAULT_MATCH_COLUMNS)
         self.flow_box.set_homogeneous(True)
         self.flow_box.set_valign(Gtk.Align.FILL)
+        self.flow_box.set_halign(Gtk.Align.FILL)
+        self.flow_box.set_hexpand(True)
         self.flow_box.set_vexpand(True)
-        content_box.append(self.flow_box)
+
+        cards_scrolled_window = Gtk.ScrolledWindow()
+        cards_scrolled_window.set_policy(
+            Gtk.PolicyType.NEVER,
+            Gtk.PolicyType.AUTOMATIC,
+        )
+        cards_scrolled_window.set_halign(Gtk.Align.FILL)
+        cards_scrolled_window.set_hexpand(True)
+        cards_scrolled_window.set_vexpand(True)
+        cards_scrolled_window.set_child(self.flow_box)
+        content_box.append(cards_scrolled_window)
 
         toolbar_view.set_content(content_box)
         self._update_progress()
@@ -275,6 +326,8 @@ class FlashcardMatchPlayer:
         button = Gtk.Button()
         button.add_css_class("flat")
         button.add_css_class("match-card-button")
+        button.set_halign(Gtk.Align.FILL)
+        button.set_hexpand(True)
         item = MatchCardItem(
             pair_id=pair_id,
             role=role,
@@ -299,6 +352,8 @@ class FlashcardMatchPlayer:
             vexpand=True,
         )
         surface.add_css_class("match-card-surface")
+        surface.set_halign(Gtk.Align.FILL)
+        surface.set_hexpand(True)
         surface.set_valign(Gtk.Align.FILL)
 
         side_label = Gtk.Label(
@@ -320,6 +375,8 @@ class FlashcardMatchPlayer:
         )
         content_label = Gtk.Label(label=label_text, wrap=True, xalign=0, yalign=0)
         content_label.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+        content_label.set_halign(Gtk.Align.FILL)
+        content_label.set_hexpand(True)
         content_label.add_css_class("body")
         content_label.set_vexpand(True)
         content_label.set_max_width_chars(22)

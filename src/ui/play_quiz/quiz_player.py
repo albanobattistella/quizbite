@@ -10,7 +10,7 @@ import base64
 from functools import partial
 from gettext import gettext as _
 
-from gi.repository import Adw, Gdk, GLib, Gtk
+from gi.repository import Adw, Gdk, GLib, Gtk, Pango
 
 from .quiz_session import (
     QuizSession,
@@ -33,6 +33,101 @@ QUESTION_IMAGE_CSS = """
   border-radius: 20px;
 }
 """
+
+MOBILE_QUESTION_WIDTH = 420
+DESKTOP_QUESTION_SIDE_MARGIN = 32
+MOBILE_QUESTION_SIDE_MARGIN = 18
+
+
+class ResponsiveQuestionBox(Gtk.Box):
+    """Question content box with narrower side margins on mobile widths."""
+
+    __gtype_name__ = "QuizbiteResponsiveQuestionBox"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._side_margin = -1
+        self._set_side_margin(DESKTOP_QUESTION_SIDE_MARGIN)
+
+    def do_size_allocate(self, width: int, height: int, baseline: int) -> None:
+        """Update side margins before laying out children."""
+        self._update_side_margins(width)
+        super().do_size_allocate(width, height, baseline)
+
+    def _update_side_margins(self, width: int) -> None:
+        if width <= 0:
+            return
+
+        margin = (
+            MOBILE_QUESTION_SIDE_MARGIN
+            if width <= MOBILE_QUESTION_WIDTH
+            else DESKTOP_QUESTION_SIDE_MARGIN
+        )
+        self._set_side_margin(margin)
+
+    def _set_side_margin(self, margin: int) -> None:
+        if margin == self._side_margin:
+            return
+
+        self._side_margin = margin
+        self.set_margin_start(margin)
+        self.set_margin_end(margin)
+        self.queue_resize()
+
+
+class QuestionNavigationControls(Gtk.Box):
+    """Previous/next controls that stack on narrow question pages."""
+
+    __gtype_name__ = "QuizbiteQuestionNavigationControls"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._previous_button: Gtk.Button | None = None
+        self._spacer: Gtk.Widget | None = None
+        self._next_button: Gtk.Button | None = None
+        self._is_stacked = False
+
+    def set_controls(
+        self,
+        previous_button: Gtk.Button,
+        spacer: Gtk.Widget,
+        next_button: Gtk.Button,
+    ) -> None:
+        """Track child controls that change layout on mobile widths."""
+        self._previous_button = previous_button
+        self._spacer = spacer
+        self._next_button = next_button
+
+    def do_size_allocate(self, width: int, height: int, baseline: int) -> None:
+        """Update button layout before GTK allocates children."""
+        self._update_controls_layout(width)
+        super().do_size_allocate(width, height, baseline)
+
+    def _update_controls_layout(self, width: int) -> None:
+        if (
+            self._previous_button is None
+            or self._spacer is None
+            or self._next_button is None
+            or width <= 0
+        ):
+            return
+
+        should_stack = width <= MOBILE_QUESTION_WIDTH
+        if should_stack == self._is_stacked:
+            return
+
+        self._is_stacked = should_stack
+        self.set_orientation(
+            Gtk.Orientation.VERTICAL if should_stack else Gtk.Orientation.HORIZONTAL
+        )
+        self.set_spacing(10 if should_stack else 12)
+        self._spacer.set_visible(not should_stack)
+
+        for button in (self._previous_button, self._next_button):
+            button.set_halign(Gtk.Align.FILL if should_stack else Gtk.Align.CENTER)
+            button.set_hexpand(should_stack)
+
+        self.queue_resize()
 
 
 class QuizPlayer:
@@ -158,19 +253,29 @@ class QuizPlayer:
         total_questions: int,
     ) -> Adw.NavigationPage:
         """Build one question page."""
-        page_content = Gtk.Box(
+        page_content = ResponsiveQuestionBox(
             orientation=Gtk.Orientation.VERTICAL,
             spacing=18,
             margin_top=24,
             margin_bottom=24,
-            margin_start=32,
-            margin_end=32,
             vexpand=True,
         )
+        page_content.set_halign(Gtk.Align.FILL)
+        page_content.set_hexpand(True)
         page_content.set_focusable(True)
 
         clamp = Adw.Clamp(maximum_size=720, tightening_threshold=480)
+        clamp.set_halign(Gtk.Align.FILL)
+        clamp.set_hexpand(True)
+        clamp.set_vexpand(True)
         clamp.set_child(page_content)
+
+        scrolled_window = Gtk.ScrolledWindow()
+        scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scrolled_window.set_halign(Gtk.Align.FILL)
+        scrolled_window.set_hexpand(True)
+        scrolled_window.set_vexpand(True)
+        scrolled_window.set_child(clamp)
 
         session = self._require_session()
         answer_action = create_answer_action(
@@ -188,6 +293,8 @@ class QuizPlayer:
             xalign=0,
         )
         section_label.add_css_class("caption-heading")
+        section_label.set_halign(Gtk.Align.FILL)
+        section_label.set_hexpand(True)
         page_content.append(section_label)
 
         question_label = Gtk.Label(
@@ -196,6 +303,9 @@ class QuizPlayer:
             xalign=0,
         )
         question_label.add_css_class("title-2")
+        question_label.set_halign(Gtk.Align.FILL)
+        question_label.set_hexpand(True)
+        question_label.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
         page_content.append(question_label)
 
         question_image = self._build_question_image_widget(question)
@@ -203,6 +313,8 @@ class QuizPlayer:
             page_content.append(question_image)
 
         options_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        options_box.set_halign(Gtk.Align.FILL)
+        options_box.set_hexpand(True)
         options_box.set_vexpand(True)
         page_content.append(options_box)
 
@@ -221,8 +333,12 @@ class QuizPlayer:
             options_box.append(option_check)
             option_count += 1
 
-        buttons_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        buttons_box = QuestionNavigationControls(
+            orientation=Gtk.Orientation.HORIZONTAL,
+            spacing=12,
+        )
         buttons_box.set_halign(Gtk.Align.FILL)
+        buttons_box.set_hexpand(True)
 
         previous_button = Gtk.Button(label=_("Previous"))
         previous_button.add_css_class("pill")
@@ -232,7 +348,8 @@ class QuizPlayer:
         )
         buttons_box.append(previous_button)
 
-        buttons_box.append(Gtk.Box(hexpand=True))
+        buttons_spacer = Gtk.Box(hexpand=True)
+        buttons_box.append(buttons_spacer)
 
         next_button = Gtk.Button(
             label=_("Finish") if question_index == total_questions - 1 else _("Next")
@@ -241,6 +358,7 @@ class QuizPlayer:
         next_button.add_css_class("pill")
         next_button.connect("clicked", self.on_next_question_clicked, question_index)
         buttons_box.append(next_button)
+        buttons_box.set_controls(previous_button, buttons_spacer, next_button)
 
         page_content.append(buttons_box)
 
@@ -256,7 +374,7 @@ class QuizPlayer:
         page_content.add_controller(key_controller)
 
         return Adw.NavigationPage.new(
-            clamp, _("Question {number}").format(number=question_index + 1)
+            scrolled_window, _("Question {number}").format(number=question_index + 1)
         )
 
     def on_answer_selection_changed(self, action, value, question_index: int) -> None:
@@ -387,7 +505,7 @@ class QuizPlayer:
         content_width = 900
         content_height = 700
         if root is not None:
-            content_width = max(360, min(int(root.get_width() * 0.88), 1200))
+            content_width = max(300, min(int(root.get_width() * 0.88), 1200))
             content_height = max(280, min(int(root.get_height() * 0.88), 900))
 
         dialog.set_content_width(content_width)
@@ -578,18 +696,18 @@ class QuizPlayer:
         is_correct: bool,
     ) -> Gtk.Widget:
         """Build one quiz-like review item."""
-        question_box = Gtk.Box(
+        question_box = ResponsiveQuestionBox(
             orientation=Gtk.Orientation.VERTICAL,
             spacing=18,
             margin_top=24,
             margin_bottom=24,
-            margin_start=32,
-            margin_end=32,
         )
         question_box.set_hexpand(True)
         question_box.set_halign(Gtk.Align.FILL)
 
         header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        header_box.set_halign(Gtk.Align.FILL)
+        header_box.set_hexpand(True)
 
         section_label = Gtk.Label(
             label=_("Question {current} of {total}").format(
@@ -608,6 +726,9 @@ class QuizPlayer:
 
         question_label = Gtk.Label(label=question["title"], wrap=True, xalign=0)
         question_label.add_css_class("title-2")
+        question_label.set_halign(Gtk.Align.FILL)
+        question_label.set_hexpand(True)
+        question_label.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
         question_box.append(question_label)
 
         question_image = self._build_question_image_widget(question, height=180)
@@ -615,6 +736,8 @@ class QuizPlayer:
             question_box.append(question_image)
 
         options_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        options_box.set_halign(Gtk.Align.FILL)
+        options_box.set_hexpand(True)
         question_box.append(options_box)
 
         first_check = None
@@ -659,9 +782,12 @@ class QuizPlayer:
         option_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         option_box.set_margin_start(8)
         option_box.set_hexpand(True)
-        option_box.set_halign(Gtk.Align.START)
+        option_box.set_halign(Gtk.Align.FILL)
 
         option_label = Gtk.Label(label=option["text"], wrap=True, xalign=0)
+        option_label.set_halign(Gtk.Align.FILL)
+        option_label.set_hexpand(True)
+        option_label.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
         option_box.append(option_label)
 
         is_selected = option_index == selected_index

@@ -7,9 +7,15 @@
   <name>Quizbite</name>
   <summary>Create and play quizzes</summary>
   <description>
-    <p
-        >Create quizzes with multiple choice questions. Add an optional image per question. Export quizzes to PDF.</p>
-    <p>Import and export quiz files. Keep a local quiz library.</p>
+    <p>Create and play quizzes.</p>
+    <p>Features:</p>
+    <ul>
+      <li>Create quizzes with multiple choice questions.</li>
+      <li>Add images to questions.</li>
+      <li>Import and export .quiz files.</li>
+      <li>Import flashcards and play them.</li>
+      <li>Export a quiz or flashcards to PDF.</li>
+    </ul>
   </description>
 
   <developer id="dev.mohfy">
@@ -23,6 +29,16 @@
   <translation type="gettext">quizbite</translation>
   <launchable type="desktop-id">dev.mohfy.quizbite.desktop</launchable>
   <content_rating type="oars-1.1" />
+
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>touch</control>
+  </supports>
+
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
 
   <screenshots>
     <screenshot type="default">
@@ -61,6 +77,11 @@
   </branding>
 
   <releases>
+    <release version="2.0.9" date="2026-06-04">
+      <description>
+        <p>Improved mobile support.</p>
+      </description>
+    </release>
     <release version="2.0.1" date="2026-06-01">
       <description>
         <p>Some UI/UX fixes.</p>

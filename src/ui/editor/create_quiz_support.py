@@ -16,6 +16,8 @@ from pathlib import Path
 from gi.repository import Adw, Gdk, Gio, GLib, Gtk
 
 UNSELECTED_OPTION = ""
+COMPACT_IMAGE_ROW_WIDTH = 360
+CHOOSE_IMAGE_ICON = "insert-image-symbolic"
 
 
 @dataclass(slots=True)
@@ -39,6 +41,46 @@ class QuestionEditorBlock:
     remove_button: Gtk.Button
     remove_image_button: Gtk.Button
     image: QuestionImageSelection | None = None
+
+
+class QuestionImageRow(Adw.ActionRow):
+    """Image row that keeps its choose action compact on narrow screens."""
+
+    __gtype_name__ = "QuizbiteQuestionImageRow"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._choose_button: Gtk.Button | None = None
+        self._choose_button_is_compact = False
+
+    def set_choose_button(self, choose_button: Gtk.Button) -> None:
+        """Track the choose button so the row can adapt it on resize."""
+        self._choose_button = choose_button
+
+    def do_size_allocate(self, width: int, height: int, baseline: int) -> None:
+        """Update the choose action before GTK allocates row children."""
+        self._update_choose_button_layout(width)
+        super().do_size_allocate(width, height, baseline)
+
+    def _update_choose_button_layout(self, width: int) -> None:
+        if self._choose_button is None or width <= 0:
+            return
+
+        should_compact = width <= COMPACT_IMAGE_ROW_WIDTH
+        if should_compact == self._choose_button_is_compact:
+            return
+
+        self._choose_button_is_compact = should_compact
+        if should_compact:
+            self._choose_button.set_icon_name(CHOOSE_IMAGE_ICON)
+            self._choose_button.remove_css_class("pill")
+            self._choose_button.add_css_class("flat")
+        else:
+            self._choose_button.set_label(_("Choose Image"))
+            self._choose_button.remove_css_class("flat")
+            self._choose_button.add_css_class("pill")
+
+        self.queue_resize()
 
 
 def create_entry_row(title: str, on_changed: Callable) -> Adw.EntryRow:
@@ -96,7 +138,7 @@ def create_image_row(
     group: Adw.PreferencesGroup,
 ) -> tuple[Adw.ActionRow, Gtk.Picture, Gtk.Button]:
     """Build the optional image row UI."""
-    row = Adw.ActionRow(
+    row = QuestionImageRow(
         title=_("Question Image (Optional)"),
         subtitle=_("No image selected"),
     )
@@ -110,12 +152,16 @@ def create_image_row(
     row.add_prefix(picture)
 
     choose_button = Gtk.Button(label=_("Choose Image"))
+    choose_button.set_valign(Gtk.Align.CENTER)
     choose_button.add_css_class("pill")
+    choose_button.set_tooltip_text(_("Choose Image"))
     choose_button.connect("clicked", on_choose_clicked, group)
+    row.set_choose_button(choose_button)
     row.add_suffix(choose_button)
 
     remove_button = Gtk.Button(icon_name="user-trash-symbolic")
     remove_button.set_tooltip_text(_("Remove image"))
+    remove_button.set_valign(Gtk.Align.CENTER)
     remove_button.add_css_class("flat")
     remove_button.add_css_class("destructive-action")
     remove_button.set_sensitive(False)

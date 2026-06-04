@@ -8,21 +8,103 @@ from gettext import gettext as _, ngettext
 from gi.repository import Adw, Gtk
 
 
+MOBILE_ROW_WIDTH = 480
+
+
+class LibraryActionRow(Adw.ActionRow):
+    """Action row that adapts its trailing controls for narrow screens."""
+
+    __gtype_name__ = "QuizbiteLibraryActionRow"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._actions_box: Gtk.Box | None = None
+        self._actions_are_stacked = False
+
+    def set_actions_box(self, actions_box: Gtk.Box) -> None:
+        """Track the action controls that should stack on mobile widths."""
+        self._actions_box = actions_box
+
+    def do_size_allocate(self, width: int, height: int, baseline: int) -> None:
+        """Update the row action layout when GTK allocates a new width."""
+        self._update_action_layout(width)
+        super().do_size_allocate(width, height, baseline)
+
+    def _update_action_layout(self, width: int) -> None:
+        if self._actions_box is None or width <= 0:
+            return
+
+        should_stack = width <= MOBILE_ROW_WIDTH
+        if should_stack == self._actions_are_stacked:
+            return
+
+        self._actions_are_stacked = should_stack
+        self._actions_box.set_orientation(
+            Gtk.Orientation.VERTICAL
+            if should_stack
+            else Gtk.Orientation.HORIZONTAL
+        )
+        self._actions_box.set_spacing(2 if should_stack else 4)
+        self.queue_resize()
+
+
 def build_library_row(
     item: dict,
     on_activate: Callable,
     menu_actions: Sequence[dict],
 ) -> Adw.ActionRow:
     """Build one row for the mixed library list."""
-    row = Adw.ActionRow(
+    row = LibraryActionRow(
         title=item["title"],
         subtitle=format_library_item_subtitle(item),
     )
+    row.set_title_lines(2)
+    row.set_subtitle_lines(2)
     row.set_activatable(True)
-    row.add_suffix(build_item_menu_button(menu_actions))
-    row.add_suffix(Gtk.Image(icon_name="go-next-symbolic"))
+    actions_box = build_row_actions(row, item, on_activate, menu_actions)
+    row.set_actions_box(actions_box)
+    row.add_suffix(actions_box)
     row.connect("activated", on_activate, item)
     return row
+
+
+def build_row_actions(
+    row: Adw.ActionRow,
+    item: dict,
+    on_activate: Callable,
+    menu_actions: Sequence[dict],
+) -> Gtk.Box:
+    """Build the trailing row buttons, stacked later on narrow screens."""
+    actions_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
+    actions_box.set_valign(Gtk.Align.CENTER)
+
+    actions_box.append(build_item_menu_button(menu_actions))
+    actions_box.append(build_open_item_button(row, item, on_activate))
+    return actions_box
+
+
+def build_open_item_button(
+    row: Adw.ActionRow,
+    item: dict,
+    on_activate: Callable,
+) -> Gtk.Button:
+    """Build the explicit open button shown at the end of a library row."""
+    button = Gtk.Button(icon_name="go-next-symbolic")
+    button.set_valign(Gtk.Align.CENTER)
+    button.add_css_class("flat")
+    button.set_tooltip_text(_("Open study set"))
+    button.connect("clicked", activate_library_row, row, item, on_activate)
+    return button
+
+
+def activate_library_row(
+    _button: Gtk.Button,
+    row: Adw.ActionRow,
+    item: dict,
+    on_activate: Callable,
+) -> None:
+    """Route the explicit open button through the row activation callback."""
+    on_activate(row, item)
 
 
 def build_item_menu_button(
@@ -81,12 +163,16 @@ def build_menu_item_button(
 def build_menu_item_content(label: str, icon_name: str | None) -> Gtk.Box:
     """Build the visible icon and label content for a popover item."""
     content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-    content.set_halign(Gtk.Align.START)
+    content.set_halign(Gtk.Align.FILL)
+    content.set_hexpand(True)
 
     if icon_name is not None:
         content.append(Gtk.Image(icon_name=icon_name))
 
     item_label = Gtk.Label(label=label)
+    item_label.set_hexpand(True)
+    item_label.set_max_width_chars(28)
+    item_label.set_wrap(True)
     item_label.set_xalign(0)
     content.append(item_label)
     return content
