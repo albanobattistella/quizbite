@@ -1,19 +1,20 @@
-# List of source files containing translatable strings.
-# Please keep this file sorted alphabetically.
 data/dev.mohfy.quizbite.desktop.in
-data/dev.mohfy.quizbite.metainfo.xml.in
 data/dev.mohfy.quizbite.gschema.xml
+data/dev.mohfy.quizbite.metainfo.xml.in
+src/data/flashcard_apkg.py
 src/data/quiz_file.py
 src/main.py
-src/shortcuts_dialog.ui
+src/shortcuts_dialog.blp
+src/ui/editor/create_quiz.blp
 src/ui/editor/create_quiz.py
-src/ui/editor/create_quiz.ui
 src/ui/editor/create_quiz_support.py
+src/ui/play_flashcard/flashcard_match_player.py
+src/ui/play_flashcard/flashcard_mode_dialog.py
+src/ui/play_flashcard/flashcard_quiz_builder.py
 src/ui/play_quiz/quiz_player.py
-src/ui/play_quiz/quiz_session.py
 src/ui/play_quiz/score_view.py
 src/ui/quiz_library.py
 src/ui/utils/file_dialogs.py
 src/ui/utils/pdfgenerator.py
+src/ui/window.blp
 src/ui/window.py
-src/ui/window.ui

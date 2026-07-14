@@ -1,117 +1,122 @@
-# Italian translations for PACKAGE package.
-# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
+# Aleksandr Shamaraev <shad@altlinux.org>, 2026.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: quizbite 1.0.0\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-14 15:39+1100\n"
-"PO-Revision-Date: 2026-04-16 21:33+0200\n"
-"Last-Translator: Albano Battistella\n"
-"Language-Team: Italian\n"
-"Language: it\n"
+"PO-Revision-Date: 2026-07-14 16:55+1100\n"
+"Last-Translator: Aleksandr Shamaraev <shad@altlinux.org>\n"
+"Language-Team: \n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Generator: Poedit 3.9\n"
 
 #: src/data/flashcard_apkg.py:179
 msgid "APKG file does not contain a supported Anki collection."
-msgstr ""
+msgstr "Файл APKG не содержит поддерживаемую коллекцию Anki."
 
 #: src/data/flashcard_apkg.py:192 src/data/flashcard_apkg.py:195
 msgid "APKG media manifest is invalid."
-msgstr ""
+msgstr "Файл манифеста APKG недействителен."
 
 #: src/data/flashcard_apkg.py:223
 msgid "APKG file does not contain collection metadata."
-msgstr ""
+msgstr "Файл APKG не содержит метаданных коллекции."
 
 #: src/data/flashcard_apkg.py:225
 msgid "APKG note models are invalid."
-msgstr ""
+msgstr "Примечания к моделям APKG недействительны."
 
 #: src/data/flashcard_apkg.py:226
 msgid "APKG deck metadata is invalid."
-msgstr ""
+msgstr "Метаданные колоды APKG недействительны."
 
 #: src/data/flashcard_apkg.py:283
 msgid "No supported flashcards were found in the APKG file."
-msgstr ""
+msgstr "В файле APKG не обнаружено поддерживаемых карточек для запоминания."
 
 #: src/data/flashcard_apkg.py:422
 msgid "Imported Flashcards"
-msgstr ""
+msgstr "Импортированные карточки"
 
 #: src/data/flashcard_apkg.py:453 src/ui/utils/pdfgenerator.py:456
 msgid "Flashcards"
-msgstr ""
+msgstr "Флэш-карты"
 
 #: src/data/flashcard_apkg.py:750
 msgid "Flashcard Image"
-msgstr ""
+msgstr "Изображение на флэш-карте"
 
 #: src/data/flashcard_apkg.py:750 src/ui/quiz_library.py:190
 msgid "Flashcard"
-msgstr ""
+msgstr "Флэш-карта"
 
 #: src/data/quiz_file.py:48
 msgid "Question image must be a JSON object."
-msgstr "L'immagine della domanda deve essere un oggetto JSON."
+msgstr "Изображение вопроса должно быть объектом JSON."
 
 #: src/data/quiz_file.py:55
 msgid "Question image filename is required."
-msgstr "Il nome file dell'immagine della domanda è obbligatorio."
+msgstr "Имя файла изображения вопроса обязательно для заполнения."
 
 #: src/data/quiz_file.py:58
 msgid "Question image media_type is required."
-msgstr "Il media_type dell'immagine della domanda è obbligatorio."
+msgstr "Для отображения изображения вопроса требуется указать media_type."
 
 #: src/data/quiz_file.py:61
 msgid "Question image media_type must be an image MIME type."
 msgstr ""
-"Il media_type dell'immagine della domanda deve essere un tipo MIME immagine."
+"Тип медиафайла изображения (media_type) должен быть MIME-типом "
+"изображения."
 
 #: src/data/quiz_file.py:64
 msgid "Question image data is required."
-msgstr "I dati dell'immagine della domanda sono obbligatori."
+msgstr "Требуются данные изображения вопроса."
 
 #: src/data/quiz_file.py:69
 msgid "Question image data must be valid base64."
-msgstr "I dati dell'immagine della domanda devono essere base64 validi."
+msgstr "Данные изображения вопроса должны быть корректными в base64."
 
 #: src/data/quiz_file.py:81
 msgid "Quiz file must contain a JSON object."
-msgstr "Il file del quiz deve contenere un oggetto JSON."
+msgstr "Файл теста должен содержать объект в формате JSON."
 
 #: src/data/quiz_file.py:85
 msgid "Quiz title is required."
-msgstr "Il titolo del quiz è obbligatorio."
+msgstr "Название теста обязательно."
 
 #: src/data/quiz_file.py:89
 msgid "Quiz must include at least one question."
-msgstr "Il quiz deve includere almeno una domanda."
+msgstr "Тест должен содержать хотя бы один вопрос."
 
 #: src/data/quiz_file.py:94
 msgid "Each question must be a JSON object."
-msgstr "Ogni domanda deve essere un oggetto JSON."
+msgstr "Каждый вопрос должен быть представлен в виде объекта JSON."
 
 #: src/data/quiz_file.py:102
 msgid "Each question needs text."
-msgstr "Ogni domanda richiede un testo."
+msgstr "Для каждого вопроса нужен текст."
 
 #: src/data/quiz_file.py:105
 msgid "Each question must have at least two options."
-msgstr "Ogni domanda deve avere almeno due opzioni."
+msgstr "Каждый вопрос должен содержать как минимум два варианта ответа."
 
 #: src/data/quiz_file.py:110
 msgid "Options must be non-empty strings."
-msgstr "Le opzioni devono essere stringhe non vuote."
+msgstr "Параметры должны быть непустыми строками."
 
 #: src/data/quiz_file.py:116
 msgid "Each question must have a valid correct_index."
-msgstr "Ogni domanda deve avere un correct_index valido."
+msgstr "Каждый вопрос должен иметь действительный correct_index."
 
 #: src/main.py:38 src/ui/window.blp:5 src/ui/window.blp:11
 msgid "Quizbite"
@@ -119,319 +124,319 @@ msgstr "Quizbite"
 
 #: src/main.py:42
 msgid "Create quizzes, study flashcards, and export both."
-msgstr ""
+msgstr "Создавайте тесты, изучайте карточки и экспортируйте и то, и другое."
 
 #: src/main.py:83
 msgid "translator-credits"
-msgstr "Crediti traduttori"
+msgstr "translator-credits"
 
 #: src/shortcuts_dialog.blp:6
 msgid "Shortcuts"
-msgstr "Scorciatoie"
+msgstr "Ярлыки"
 
 #: src/ui/editor/create_quiz.blp:5 src/ui/editor/create_quiz.blp:13
 msgid "Quiz Editor"
-msgstr "Editor quiz"
+msgstr "Редактор теста"
 
 #: src/ui/editor/create_quiz.blp:18
 msgid "Create"
-msgstr "Crea"
+msgstr "Создать"
 
 #: src/ui/editor/create_quiz.blp:43 src/ui/quiz_library.py:197
 #: src/ui/utils/pdfgenerator.py:113
 msgid "Quiz"
-msgstr "Quiz"
+msgstr "Тест"
 
 #: src/ui/editor/create_quiz.blp:44
 msgid "Set the quiz title."
-msgstr "Imposta il titolo del quiz."
+msgstr "Задайте название теста."
 
 #: src/ui/editor/create_quiz.blp:47
 msgid "Quiz Title"
-msgstr "Titolo quiz"
+msgstr "Название теста"
 
 #: src/ui/editor/create_quiz.blp:61
 msgid "Questions"
-msgstr "Domande"
+msgstr "Вопросы"
 
 #: src/ui/editor/create_quiz.blp:72
 msgid "Add Question"
-msgstr "Aggiungi domanda"
+msgstr "Добавить вопрос"
 
 #: src/ui/editor/create_quiz.py:80 src/ui/window.py:342 src/ui/window.py:379
 msgid "Save"
-msgstr "Salva"
+msgstr "Сохранить"
 
 #: src/ui/editor/create_quiz.py:81 src/ui/editor/create_quiz.py:82
 #: src/ui/window.py:201
 msgid "Edit Quiz"
-msgstr ""
+msgstr "Редактировать тест"
 
 #: src/ui/editor/create_quiz.py:110 src/ui/window.py:107
 msgid "OK"
-msgstr "OK"
+msgstr "Ок"
 
 #: src/ui/editor/create_quiz.py:124 src/ui/editor/create_quiz.py:279
 #: src/ui/play_quiz/quiz_player.py:377 src/ui/utils/pdfgenerator.py:117
 #, python-brace-format
 msgid "Question {number}"
-msgstr "Domanda {number}"
+msgstr "Вопрос {number}"
 
 #: src/ui/editor/create_quiz.py:127
 msgid "Question"
-msgstr "Domanda"
+msgstr "Вопрос"
 
 #: src/ui/editor/create_quiz.py:163
 msgid "Remove Question"
-msgstr "Rimuovi domanda"
+msgstr "Удалить вопрос"
 
 #: src/ui/editor/create_quiz.py:290
 msgid "Select Question Image"
-msgstr "Seleziona immagine della domanda"
+msgstr "Выберать изображение вопроса"
 
 #: src/ui/editor/create_quiz.py:291
 msgid "Select"
-msgstr "Seleziona"
+msgstr "Выбрать"
 
 #: src/ui/editor/create_quiz.py:312 src/ui/editor/create_quiz.py:324
 msgid "Image Selection Failed"
-msgstr "Selezione immagine fallita"
+msgstr "Ошибка выбора изображения"
 
 #: src/ui/editor/create_quiz.py:370
 msgid "Save Failed"
-msgstr ""
+msgstr "Ошибка сохранения"
 
 #: src/ui/editor/create_quiz.py:371 src/ui/window.py:309
 msgid "Quiz could not be loaded for editing."
-msgstr ""
+msgstr "Тест не удалось загрузить для редактирования."
 
 #: src/ui/editor/create_quiz_support.py:79
 #: src/ui/editor/create_quiz_support.py:154
 #: src/ui/editor/create_quiz_support.py:157
 msgid "Choose Image"
-msgstr "Scegli immagine"
+msgstr "Выберать изображение"
 
 #: src/ui/editor/create_quiz_support.py:118
 #, python-brace-format
 msgid "Option {number}"
-msgstr "Opzione {number}"
+msgstr "Параметр {number}"
 
 #: src/ui/editor/create_quiz_support.py:124
 msgid "Mark as correct answer"
-msgstr "Contrassegna come risposta corretta"
+msgstr "Отметить как правильный ответ"
 
 #: src/ui/editor/create_quiz_support.py:142
 msgid "Question Image (Optional)"
-msgstr "Immagine domanda (opzionale)"
+msgstr "Изображение вопроса (необязательно)"
 
 #: src/ui/editor/create_quiz_support.py:143
 #: src/ui/editor/create_quiz_support.py:228
 msgid "No image selected"
-msgstr "Nessuna immagine selezionata"
+msgstr "Изображение не выбрано"
 
 #: src/ui/editor/create_quiz_support.py:163
 msgid "Remove image"
-msgstr "Rimuovi immagine"
+msgstr "Удалить изображение"
 
 #: src/ui/editor/create_quiz_support.py:189
 msgid "Selected file is not a supported image."
-msgstr "Il file selezionato non è un'immagine supportata."
+msgstr "Выбранный файл не является поддерживаемым изображением."
 
 #: src/ui/editor/create_quiz_support.py:194
 msgid "Selected file could not be loaded as an image."
-msgstr "Impossibile caricare il file selezionato come immagine."
+msgstr "Выбранный файл не удалось загрузить в виде изображения."
 
 #: src/ui/editor/create_quiz_support.py:210
 msgid "Stored question image could not be loaded."
-msgstr ""
+msgstr "Не удалось загрузить сохраненное изображение вопроса."
 
 #: src/ui/editor/create_quiz_support.py:213
 msgid "Question Image"
-msgstr ""
+msgstr "Изображение вопроса"
 
 #: src/ui/play_flashcard/flashcard_match_player.py:142
 #, python-brace-format
 msgid "{title} (Match Mode)"
-msgstr ""
+msgstr "{title} (режим сопоставления)"
 
 #: src/ui/play_flashcard/flashcard_match_player.py:264
 #, python-brace-format
 msgid "Screen {current} of {total}"
-msgstr ""
+msgstr "Отображение {current} из {total}"
 
 #: src/ui/play_flashcard/flashcard_match_player.py:360
 #: src/ui/utils/pdfgenerator.py:486
 msgid "Term"
-msgstr ""
+msgstr "Термин"
 
 #: src/ui/play_flashcard/flashcard_match_player.py:360
 #: src/ui/utils/pdfgenerator.py:493
 msgid "Definition"
-msgstr ""
+msgstr "Определение"
 
 #: src/ui/play_flashcard/flashcard_match_player.py:372
 msgid "Image"
-msgstr ""
+msgstr "Изображение"
 
 #: src/ui/play_flashcard/flashcard_match_player.py:374
 msgid "Empty Term"
-msgstr ""
+msgstr "Пустой термин"
 
 #: src/ui/play_flashcard/flashcard_match_player.py:374
 msgid "Empty Definition"
-msgstr ""
+msgstr "Пустое определение"
 
 #: src/ui/play_flashcard/flashcard_match_player.py:516
 msgid "Match Complete"
-msgstr ""
+msgstr "Совпадение завершено"
 
 #: src/ui/play_flashcard/flashcard_match_player.py:517
 #, python-brace-format
 msgid "You matched all {count} flashcards."
-msgstr ""
+msgstr "Вы сопоставили все {count} карточки."
 
 #: src/ui/play_flashcard/flashcard_match_player.py:526
 msgid "Play Again"
-msgstr ""
+msgstr "Сыграть снова"
 
 #: src/ui/play_flashcard/flashcard_mode_dialog.py:21
 msgid "Term to Definition"
-msgstr ""
+msgstr "Term to Definition"
 
 #: src/ui/play_flashcard/flashcard_mode_dialog.py:22
 msgid "Definition to Term"
-msgstr ""
+msgstr "Definition to Term"
 
 #: src/ui/play_flashcard/flashcard_mode_dialog.py:72
 #, python-brace-format
 msgid "{count} flashcards"
-msgstr ""
+msgstr "{count} карточек"
 
 #: src/ui/play_flashcard/flashcard_mode_dialog.py:81
 msgid "Direction"
-msgstr ""
+msgstr "Направление"
 
 #: src/ui/play_flashcard/flashcard_mode_dialog.py:82
 msgid "Choose which side appears first during study."
-msgstr ""
+msgstr "Выберите, какая сторона появится первой во время изучения."
 
 #: src/ui/play_flashcard/flashcard_mode_dialog.py:107
 msgid "Quiz Mode"
-msgstr ""
+msgstr "Режим теста"
 
 #: src/ui/play_flashcard/flashcard_mode_dialog.py:118
 #: src/ui/play_flashcard/flashcard_quiz_builder.py:16
 msgid "Quiz mode needs at least two flashcards."
-msgstr ""
+msgstr "Режим теста требуется как минимум две карточки."
 
 #: src/ui/play_flashcard/flashcard_mode_dialog.py:128
 msgid "Match Mode"
-msgstr ""
+msgstr "Режим совпадения"
 
 #: src/ui/play_flashcard/flashcard_mode_dialog.py:155
 #, python-brace-format
 msgid "{title} (Flashcards)"
-msgstr ""
+msgstr "{title} (карточки)"
 
 #: src/ui/play_flashcard/flashcard_quiz_builder.py:52
 #, python-brace-format
 msgid "{title} (Quiz Mode)"
-msgstr ""
+msgstr "{title} (Режим теста)"
 
 #: src/ui/play_flashcard/flashcard_quiz_builder.py:91
 msgid "Identify the matching definition for this image."
-msgstr ""
+msgstr "Определите соответствующее определение для этого изображения."
 
 #: src/ui/play_flashcard/flashcard_quiz_builder.py:93
 msgid "Identify the matching term for this image."
-msgstr ""
+msgstr "Определите соответствующий термин для этого изображения."
 
 #: src/ui/play_flashcard/flashcard_quiz_builder.py:102
 #, python-brace-format
 msgid "{text} [Image]"
-msgstr ""
+msgstr "{text} [Изображение]"
 
 #: src/ui/play_flashcard/flashcard_quiz_builder.py:106
 msgid "[Image Term]"
-msgstr ""
+msgstr "[Термин изображения]"
 
 #: src/ui/play_flashcard/flashcard_quiz_builder.py:107
 msgid "[Image Definition]"
-msgstr ""
+msgstr "[Определение изображения]"
 
 #: src/ui/play_quiz/quiz_player.py:153
 msgid "Quiz session is not active."
-msgstr "La sessione del quiz non è attiva."
+msgstr "Сессия теста не активна."
 
 #: src/ui/play_quiz/quiz_player.py:289 src/ui/play_quiz/quiz_player.py:713
 #, python-brace-format
 msgid "Question {current} of {total}"
-msgstr "Domanda {current} di {total}"
+msgstr "Вопрос {current} из {total}"
 
 #: src/ui/play_quiz/quiz_player.py:343
 msgid "Previous"
-msgstr "Precedente"
+msgstr "Предыдущий"
 
 #: src/ui/play_quiz/quiz_player.py:355
 msgid "Finish"
-msgstr "Termina"
+msgstr "Завершить"
 
 #: src/ui/play_quiz/quiz_player.py:355
 msgid "Next"
-msgstr "Avanti"
+msgstr "Следующий"
 
 #: src/ui/play_quiz/quiz_player.py:467
 msgid "Open image"
-msgstr "Apri immagine"
+msgstr "Открыть изображение"
 
 #: src/ui/play_quiz/quiz_player.py:475 src/ui/utils/pdfgenerator.py:746
 msgid "Question image"
-msgstr "Immagine domanda"
+msgstr "Изображение вопроса"
 
 #: src/ui/play_quiz/quiz_player.py:668 src/ui/play_quiz/score_view.py:41
 msgid "Review Mistakes"
-msgstr ""
+msgstr "Исправьте ошибки"
 
 #: src/ui/play_quiz/quiz_player.py:799 src/ui/play_quiz/quiz_player.py:827
 msgid "Correct"
-msgstr ""
+msgstr "Правильно"
 
 #: src/ui/play_quiz/quiz_player.py:804 src/ui/play_quiz/quiz_player.py:832
 msgid "Wrong"
-msgstr ""
+msgstr "Неправильно"
 
 #: src/ui/play_quiz/quiz_player.py:830
 msgid "Not answered"
-msgstr ""
+msgstr "Не ответил"
 
 #: src/ui/play_quiz/score_view.py:47
 msgid "Try Again"
-msgstr "Riprova"
+msgstr "Попробовать еще раз"
 
 #: src/ui/play_quiz/score_view.py:54
 msgid "Back to Library"
-msgstr "Torna alla libreria"
+msgstr "Вернуться в библиотеку"
 
 #: src/ui/play_quiz/score_view.py:63
 msgid "Score"
-msgstr "Punteggio"
+msgstr "Счет"
 
 #: src/ui/play_quiz/score_view.py:94
 msgid "Quiz Complete"
-msgstr "Quiz completato"
+msgstr "Тест завершен"
 
 #: src/ui/play_quiz/score_view.py:95
 #, python-brace-format
 msgid "You scored {score} out of {total}."
-msgstr "Hai ottenuto {score} su {total}."
+msgstr "Вы набрали {score} из {total}."
 
 #: src/ui/quiz_library.py:95
 msgid "Open study set"
-msgstr ""
+msgstr "Open study set"
 
 #: src/ui/quiz_library.py:117
 msgid "Item actions"
-msgstr ""
+msgstr "Действия с элементами"
 
 #: src/ui/quiz_library.py:186 src/ui/utils/pdfgenerator.py:459
 #, python-brace-format
@@ -439,13 +444,15 @@ msgid "{count} flashcard"
 msgid_plural "{count} flashcards"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/ui/quiz_library.py:193 src/ui/utils/pdfgenerator.py:120
 #, python-brace-format
 msgid "{count} question"
 msgid_plural "{count} questions"
-msgstr[0] "{count} domanda"
-msgstr[1] "{count} domande"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: src/ui/quiz_library.py:199
 #, python-brace-format
@@ -454,48 +461,48 @@ msgstr ""
 
 #: src/ui/utils/file_dialogs.py:47
 msgid "Quiz files"
-msgstr "File quiz"
+msgstr "Файлы тестов"
 
 #: src/ui/utils/file_dialogs.py:58
 msgid "Anki deck files"
-msgstr ""
+msgstr "Файлы колод Anki"
 
 #: src/ui/utils/file_dialogs.py:69
 msgid "PDF files"
-msgstr "File PDF"
+msgstr "PDF-файлы"
 
 #: src/ui/utils/file_dialogs.py:77
 msgid "Images"
-msgstr "Immagini"
+msgstr "Изображения"
 
 #: src/ui/utils/file_dialogs.py:94
 msgid "The selected file is not available as a local path."
-msgstr "Il file selezionato non è disponibile come percorso locale."
+msgstr "Выбранный файл недоступен в качестве локального пути."
 
 #: src/ui/utils/pdfgenerator.py:105
 msgid "PDF export completed without writing an output file."
-msgstr "Esportazione PDF completata senza aver scritto un file di output."
+msgstr "Экспорт в формате PDF завершен без записи выходного файла."
 
 #: src/ui/utils/pdfgenerator.py:115
 msgid "No answer key available"
-msgstr "Nessuna chiave delle risposte disponibile"
+msgstr "Ключ к ответам отсутствует"
 
 #: src/ui/utils/pdfgenerator.py:116
 msgid "Answer Key"
-msgstr "Chiave delle risposte"
+msgstr "Ключ к ответам"
 
 #: src/ui/utils/pdfgenerator.py:118
 #, python-brace-format
 msgid "Q{number}:"
-msgstr "D{number}:"
+msgstr ""
 
 #: src/ui/utils/pdfgenerator.py:124
 msgid "No printable questions available."
-msgstr "Nessuna domanda stampabile disponibile."
+msgstr "Вопросы для печати отсутствуют."
 
 #: src/ui/utils/pdfgenerator.py:463
 msgid "No printable flashcards available."
-msgstr ""
+msgstr "Карточки для печати отсутствуют."
 
 #: src/ui/utils/pdfgenerator.py:466
 msgid "Term Hidden"
@@ -519,96 +526,96 @@ msgstr ""
 
 #: src/ui/utils/pdfgenerator.py:763
 msgid "Flashcard image"
-msgstr ""
+msgstr "Изображение карточки"
 
 #: src/ui/window.blp:19
 msgid "Create Quiz"
-msgstr ""
+msgstr "Создать тест"
 
 #: src/ui/window.blp:23 src/ui/window.blp:48
 msgid "New Quiz"
-msgstr "Nuovo quiz"
+msgstr "Новый тест"
 
 #: src/ui/window.blp:31
 msgid "Main Menu"
-msgstr "Menu principale"
+msgstr "Главное Меню"
 
 #: src/ui/window.blp:38
 msgid "No Study Sets Yet"
-msgstr ""
+msgstr "Учебных наборов пока нет"
 
 #: src/ui/window.blp:39
 msgid "Create a quiz to get started, or import a quiz or Anki deck."
-msgstr ""
+msgstr "Создайте тест, чтобы начать, или импортируйте тест или колоду Anki."
 
 #: src/ui/window.blp:58 src/ui/window.blp:118 src/ui/window.py:269
 msgid "Import Study Set"
-msgstr ""
+msgstr "Импорт учебного набора"
 
 #: src/ui/window.blp:79
 msgid "Search Library"
-msgstr ""
+msgstr "Поиск в библиотеке"
 
 #: src/ui/window.blp:96
 msgid "Library"
-msgstr ""
+msgstr "Библиотека"
 
 #: src/ui/window.blp:102
 msgid "No Matching Study Sets"
-msgstr ""
+msgstr "Нет подходящих наборов для изучения"
 
 #: src/ui/window.blp:103
 msgid "Try a different search."
-msgstr ""
+msgstr "Попробуйте другой поиск."
 
 #: src/ui/window.blp:125
 msgid "Keyboard Shortcuts"
-msgstr "Scorciatoie da tastiera"
+msgstr "Сочетания клавиш"
 
 #: src/ui/window.blp:130
 msgid "About Quizbite"
-msgstr "Informazioni su Quizbite"
+msgstr "О Quizbite"
 
 #: src/ui/window.py:179
 msgid "Export APKG"
-msgstr ""
+msgstr "Экспорт APKG"
 
 #: src/ui/window.py:185 src/ui/window.py:213 src/ui/window.py:418
 msgid "Export PDF"
-msgstr "Esporta PDF"
+msgstr "Экспорт PDF"
 
 #: src/ui/window.py:191
 msgid "Delete Flashcards"
-msgstr ""
+msgstr "Удалить карточку"
 
 #: src/ui/window.py:207 src/ui/window.py:341
 msgid "Share Quiz"
-msgstr "Condividi quiz"
+msgstr "Поделиться тестом"
 
 #: src/ui/window.py:219
 msgid "Delete Quiz"
-msgstr "Elimina quiz"
+msgstr "Удалить тест"
 
 #: src/ui/window.py:257
 msgid "Quiz Mode Unavailable"
-msgstr ""
+msgstr "Режим теста недоступен"
 
 #: src/ui/window.py:270
 msgid "Import"
-msgstr "Importa"
+msgstr "Импорт"
 
 #: src/ui/window.py:280 src/ui/window.py:299
 msgid "Import Failed"
-msgstr "Importazione fallita"
+msgstr "Ошибка импорта"
 
 #: src/ui/window.py:308
 msgid "Edit Failed"
-msgstr ""
+msgstr "Ошибка редактирования"
 
 #: src/ui/window.py:323
 #, python-brace-format
 msgid "Imported {deck_count} flashcard deck(s)."
-msgstr ""
+msgstr "Импортировано {deck_count} колод карточек."
 
 #: src/ui/window.py:328
 #, python-brace-format
@@ -616,64 +623,67 @@ msgid ""
 "Imported {deck_count} flashcard deck(s) and skipped {skipped_count} "
 "unsupported card(s)."
 msgstr ""
+"Импортировано {deck_count} колод карточек и пропущено {skipped_count} не "
+"поддерживаемых карточек."
 
 #: src/ui/window.py:334
 msgid "Import Complete"
-msgstr ""
+msgstr "Импорт завершен"
 
 #: src/ui/window.py:359 src/ui/window.py:371
 msgid "Share Failed"
-msgstr "Condivisione fallita"
+msgstr "Не удалось поделиться"
 
 #: src/ui/window.py:367
 msgid "Quiz could not be loaded for export."
-msgstr "Impossibile caricare il quiz per l'esportazione."
+msgstr "Не удалось загрузить тест для экспорта."
 
 #: src/ui/window.py:378
 msgid "Export Flashcards"
-msgstr ""
+msgstr "Экспорт карточек для запоминания"
 
 #: src/ui/window.py:399 src/ui/window.py:411 src/ui/window.py:464
 #: src/ui/window.py:480 src/ui/window.py:533 src/ui/window.py:549
 msgid "Export Failed"
-msgstr "Esportazione fallita"
+msgstr "Ошибка экспорта"
 
 #: src/ui/window.py:407
 msgid "Flashcards could not be loaded for export."
-msgstr ""
+msgstr "Не удалось загрузить карточки для экспорта."
 
 #: src/ui/window.py:419
 msgid "Choose whether the exported PDF should include the answer key."
-msgstr "Scegli se il PDF esportato deve includere la chiave delle risposte."
+msgstr ""
+"Выберите, следует ли включать в экспортируемый PDF-файл ключ к ответам."
 
 #: src/ui/window.py:421 src/ui/window.py:490 src/ui/window.py:561
 #: src/ui/window.py:587
 msgid "Cancel"
-msgstr "Annulla"
+msgstr "Отмена"
 
 #: src/ui/window.py:422
 msgid "Without Answer Key"
-msgstr "Senza chiave delle risposte"
+msgstr "Без ответов"
 
 #: src/ui/window.py:423
 msgid "With Answer Key"
-msgstr "Con chiave delle risposte"
+msgstr "С ответами"
 
 #: src/ui/window.py:436
 msgid "Export Quiz PDF"
-msgstr "Esporta quiz in PDF"
+msgstr "Экспортировать тест в PDF"
 
 #: src/ui/window.py:437 src/ui/window.py:506
 msgid "Export"
-msgstr "Esporta"
+msgstr "Экспорт"
 
 #: src/ui/window.py:472
 msgid "Quiz could not be loaded for PDF export."
-msgstr "Impossibile caricare il quiz per l'esportazione in PDF."
+msgstr "Тест не удалось загрузить для экспорта в PDF."
 
 #: src/ui/window.py:487 src/ui/window.py:505
 msgid "Export Flashcard PDF"
-msgstr ""
+msgstr "Экспорт карточек в PDF"
 
 #: src/ui/window.py:488
 msgid "Choose which sides should appear in the exported study sheet."
@@ -693,75 +703,21 @@ msgstr ""
 
 #: src/ui/window.py:541
 msgid "Flashcards could not be loaded for PDF export."
-msgstr ""
+msgstr "Не удалось загрузить карточки для экспорта в PDF."
 
 #: src/ui/window.py:556
 msgid "Delete Quiz?"
-msgstr "Eliminare il quiz?"
+msgstr "Удалить тест?"
 
 #: src/ui/window.py:557 src/ui/window.py:583
 #, python-brace-format
 msgid "\"{title}\" will be removed from your library."
-msgstr "\"{title}\" verrà rimosso dalla tua libreria."
+msgstr ""
 
 #: src/ui/window.py:562 src/ui/window.py:588
 msgid "Delete"
-msgstr "Elimina"
+msgstr "Удалить"
 
 #: src/ui/window.py:582
 msgid "Delete Flashcards?"
-msgstr ""
-
-#~ msgid "GTK;"
-#~ msgstr "GTK;"
-
-#~ msgid "Create and play quizzes"
-#~ msgstr "Crea e gioca ai quiz"
-
-#~ msgid ""
-#~ "Create quizzes with multiple choice questions. Add an optional image per "
-#~ "question. Export quizzes to PDF."
-#~ msgstr ""
-#~ "Crea quiz con domande a scelta multipla. Aggiungi un'immagine opzionale "
-#~ "per ogni domanda. Esporta i quiz in PDF."
-
-#~ msgid "Import and export quiz files. Keep a local quiz library."
-#~ msgstr ""
-#~ "Importa ed esporta file di quiz. Mantieni una libreria di quiz locale."
-
-#~ msgid "mohfy"
-#~ msgstr "mohfy"
-
-#~ msgid "First release."
-#~ msgstr "Prima versione."
-
-#~ msgctxt "shortcut window"
-#~ msgid "Create Quiz"
-#~ msgstr "Crea quiz"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Import Quiz"
-#~ msgstr "Importa quiz"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Quit"
-#~ msgstr "Esci"
-
-#, python-brace-format
-#~ msgid "{answered} of {total} answered"
-#~ msgstr "{answered} di {total} risposte"
-
-#~ msgid "Quiz actions"
-#~ msgstr "Azioni quiz"
-
-#~ msgid "Import Quiz"
-#~ msgstr "Importa quiz"
-
-#~ msgid "No Quizzes Yet"
-#~ msgstr "Nessun quiz disponibile"
-
-#~ msgid "Create a quiz to get started, or import one that you already have."
-#~ msgstr "Crea un quiz per iniziare, oppure importane uno che già possiedi."
-
-#~ msgid "Quizzes"
-#~ msgstr "Quiz"
+msgstr "Удалить карточки?"
