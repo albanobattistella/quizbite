@@ -1,6 +1,3 @@
-data/dev.mohfy.quizbite.desktop.in
-data/dev.mohfy.quizbite.gschema.xml
-data/dev.mohfy.quizbite.metainfo.xml.in
 src/data/flashcard_apkg.py
 src/data/quiz_file.py
 src/main.py
