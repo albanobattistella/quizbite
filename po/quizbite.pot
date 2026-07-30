@@ -1,20 +1,22 @@
-# Italian translations for PACKAGE package.
-# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: quizbite 1.0.0\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-14 15:39+1100\n"
-"PO-Revision-Date: 2026-04-16 21:33+0200\n"
-"Last-Translator: Albano Battistella\n"
-"Language-Team: Italian\n"
-"Language: it\n"
+"POT-Creation-Date: 2026-07-29 22:02+1100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: src/data/flashcard_apkg.py:179
 msgid "APKG file does not contain a supported Anki collection."
@@ -58,64 +60,63 @@ msgstr ""
 
 #: src/data/quiz_file.py:48
 msgid "Question image must be a JSON object."
-msgstr "L'immagine della domanda deve essere un oggetto JSON."
+msgstr ""
 
 #: src/data/quiz_file.py:55
 msgid "Question image filename is required."
-msgstr "Il nome file dell'immagine della domanda è obbligatorio."
+msgstr ""
 
 #: src/data/quiz_file.py:58
 msgid "Question image media_type is required."
-msgstr "Il media_type dell'immagine della domanda è obbligatorio."
+msgstr ""
 
 #: src/data/quiz_file.py:61
 msgid "Question image media_type must be an image MIME type."
 msgstr ""
-"Il media_type dell'immagine della domanda deve essere un tipo MIME immagine."
 
 #: src/data/quiz_file.py:64
 msgid "Question image data is required."
-msgstr "I dati dell'immagine della domanda sono obbligatori."
+msgstr ""
 
 #: src/data/quiz_file.py:69
 msgid "Question image data must be valid base64."
-msgstr "I dati dell'immagine della domanda devono essere base64 validi."
+msgstr ""
 
 #: src/data/quiz_file.py:81
 msgid "Quiz file must contain a JSON object."
-msgstr "Il file del quiz deve contenere un oggetto JSON."
+msgstr ""
 
 #: src/data/quiz_file.py:85
 msgid "Quiz title is required."
-msgstr "Il titolo del quiz è obbligatorio."
+msgstr ""
 
 #: src/data/quiz_file.py:89
 msgid "Quiz must include at least one question."
-msgstr "Il quiz deve includere almeno una domanda."
+msgstr ""
 
 #: src/data/quiz_file.py:94
 msgid "Each question must be a JSON object."
-msgstr "Ogni domanda deve essere un oggetto JSON."
+msgstr ""
 
 #: src/data/quiz_file.py:102
 msgid "Each question needs text."
-msgstr "Ogni domanda richiede un testo."
+msgstr ""
 
 #: src/data/quiz_file.py:105
 msgid "Each question must have at least two options."
-msgstr "Ogni domanda deve avere almeno due opzioni."
+msgstr ""
 
 #: src/data/quiz_file.py:110
 msgid "Options must be non-empty strings."
-msgstr "Le opzioni devono essere stringhe non vuote."
+msgstr ""
 
 #: src/data/quiz_file.py:116
 msgid "Each question must have a valid correct_index."
-msgstr "Ogni domanda deve avere un correct_index valido."
+msgstr ""
 
 #: src/main.py:38 src/ui/window.blp:5 src/ui/window.blp:11
 msgid "Quizbite"
-msgstr "Quizbite"
+msgstr ""
 
 #: src/main.py:42
 msgid "Create quizzes, study flashcards, and export both."
@@ -123,44 +124,44 @@ msgstr ""
 
 #: src/main.py:83
 msgid "translator-credits"
-msgstr "Crediti traduttori"
+msgstr ""
 
 #: src/shortcuts_dialog.blp:6
 msgid "Shortcuts"
-msgstr "Scorciatoie"
+msgstr ""
 
 #: src/ui/editor/create_quiz.blp:5 src/ui/editor/create_quiz.blp:13
 msgid "Quiz Editor"
-msgstr "Editor quiz"
+msgstr ""
 
 #: src/ui/editor/create_quiz.blp:18
 msgid "Create"
-msgstr "Crea"
+msgstr ""
 
 #: src/ui/editor/create_quiz.blp:43 src/ui/quiz_library.py:197
 #: src/ui/utils/pdfgenerator.py:113
 msgid "Quiz"
-msgstr "Quiz"
+msgstr ""
 
 #: src/ui/editor/create_quiz.blp:44
 msgid "Set the quiz title."
-msgstr "Imposta il titolo del quiz."
+msgstr ""
 
 #: src/ui/editor/create_quiz.blp:47
 msgid "Quiz Title"
-msgstr "Titolo quiz"
+msgstr ""
 
 #: src/ui/editor/create_quiz.blp:61
 msgid "Questions"
-msgstr "Domande"
+msgstr ""
 
 #: src/ui/editor/create_quiz.blp:72
 msgid "Add Question"
-msgstr "Aggiungi domanda"
+msgstr ""
 
 #: src/ui/editor/create_quiz.py:80 src/ui/window.py:342 src/ui/window.py:379
 msgid "Save"
-msgstr "Salva"
+msgstr ""
 
 #: src/ui/editor/create_quiz.py:81 src/ui/editor/create_quiz.py:82
 #: src/ui/window.py:201
@@ -169,33 +170,33 @@ msgstr ""
 
 #: src/ui/editor/create_quiz.py:110 src/ui/window.py:107
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #: src/ui/editor/create_quiz.py:124 src/ui/editor/create_quiz.py:279
 #: src/ui/play_quiz/quiz_player.py:377 src/ui/utils/pdfgenerator.py:117
 #, python-brace-format
 msgid "Question {number}"
-msgstr "Domanda {number}"
+msgstr ""
 
 #: src/ui/editor/create_quiz.py:127
 msgid "Question"
-msgstr "Domanda"
+msgstr ""
 
 #: src/ui/editor/create_quiz.py:163
 msgid "Remove Question"
-msgstr "Rimuovi domanda"
+msgstr ""
 
 #: src/ui/editor/create_quiz.py:290
 msgid "Select Question Image"
-msgstr "Seleziona immagine della domanda"
+msgstr ""
 
 #: src/ui/editor/create_quiz.py:291
 msgid "Select"
-msgstr "Seleziona"
+msgstr ""
 
 #: src/ui/editor/create_quiz.py:312 src/ui/editor/create_quiz.py:324
 msgid "Image Selection Failed"
-msgstr "Selezione immagine fallita"
+msgstr ""
 
 #: src/ui/editor/create_quiz.py:370
 msgid "Save Failed"
@@ -209,37 +210,37 @@ msgstr ""
 #: src/ui/editor/create_quiz_support.py:154
 #: src/ui/editor/create_quiz_support.py:157
 msgid "Choose Image"
-msgstr "Scegli immagine"
+msgstr ""
 
 #: src/ui/editor/create_quiz_support.py:118
 #, python-brace-format
 msgid "Option {number}"
-msgstr "Opzione {number}"
+msgstr ""
 
 #: src/ui/editor/create_quiz_support.py:124
 msgid "Mark as correct answer"
-msgstr "Contrassegna come risposta corretta"
+msgstr ""
 
 #: src/ui/editor/create_quiz_support.py:142
 msgid "Question Image (Optional)"
-msgstr "Immagine domanda (opzionale)"
+msgstr ""
 
 #: src/ui/editor/create_quiz_support.py:143
 #: src/ui/editor/create_quiz_support.py:228
 msgid "No image selected"
-msgstr "Nessuna immagine selezionata"
+msgstr ""
 
 #: src/ui/editor/create_quiz_support.py:163
 msgid "Remove image"
-msgstr "Rimuovi immagine"
+msgstr ""
 
 #: src/ui/editor/create_quiz_support.py:189
 msgid "Selected file is not a supported image."
-msgstr "Il file selezionato non è un'immagine supportata."
+msgstr ""
 
 #: src/ui/editor/create_quiz_support.py:194
 msgid "Selected file could not be loaded as an image."
-msgstr "Impossibile caricare il file selezionato come immagine."
+msgstr ""
 
 #: src/ui/editor/create_quiz_support.py:210
 msgid "Stored question image could not be loaded."
@@ -361,32 +362,32 @@ msgstr ""
 
 #: src/ui/play_quiz/quiz_player.py:153
 msgid "Quiz session is not active."
-msgstr "La sessione del quiz non è attiva."
+msgstr ""
 
 #: src/ui/play_quiz/quiz_player.py:289 src/ui/play_quiz/quiz_player.py:713
 #, python-brace-format
 msgid "Question {current} of {total}"
-msgstr "Domanda {current} di {total}"
+msgstr ""
 
 #: src/ui/play_quiz/quiz_player.py:343
 msgid "Previous"
-msgstr "Precedente"
+msgstr ""
 
 #: src/ui/play_quiz/quiz_player.py:355
 msgid "Finish"
-msgstr "Termina"
+msgstr ""
 
 #: src/ui/play_quiz/quiz_player.py:355
 msgid "Next"
-msgstr "Avanti"
+msgstr ""
 
 #: src/ui/play_quiz/quiz_player.py:467
 msgid "Open image"
-msgstr "Apri immagine"
+msgstr ""
 
 #: src/ui/play_quiz/quiz_player.py:475 src/ui/utils/pdfgenerator.py:746
 msgid "Question image"
-msgstr "Immagine domanda"
+msgstr ""
 
 #: src/ui/play_quiz/quiz_player.py:668 src/ui/play_quiz/score_view.py:41
 msgid "Review Mistakes"
@@ -406,24 +407,24 @@ msgstr ""
 
 #: src/ui/play_quiz/score_view.py:47
 msgid "Try Again"
-msgstr "Riprova"
+msgstr ""
 
 #: src/ui/play_quiz/score_view.py:54
 msgid "Back to Library"
-msgstr "Torna alla libreria"
+msgstr ""
 
 #: src/ui/play_quiz/score_view.py:63
 msgid "Score"
-msgstr "Punteggio"
+msgstr ""
 
 #: src/ui/play_quiz/score_view.py:94
 msgid "Quiz Complete"
-msgstr "Quiz completato"
+msgstr ""
 
 #: src/ui/play_quiz/score_view.py:95
 #, python-brace-format
 msgid "You scored {score} out of {total}."
-msgstr "Hai ottenuto {score} su {total}."
+msgstr ""
 
 #: src/ui/quiz_library.py:95
 msgid "Open study set"
@@ -444,8 +445,8 @@ msgstr[1] ""
 #, python-brace-format
 msgid "{count} question"
 msgid_plural "{count} questions"
-msgstr[0] "{count} domanda"
-msgstr[1] "{count} domande"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/ui/quiz_library.py:199
 #, python-brace-format
@@ -454,7 +455,7 @@ msgstr ""
 
 #: src/ui/utils/file_dialogs.py:47
 msgid "Quiz files"
-msgstr "File quiz"
+msgstr ""
 
 #: src/ui/utils/file_dialogs.py:58
 msgid "Anki deck files"
@@ -462,36 +463,36 @@ msgstr ""
 
 #: src/ui/utils/file_dialogs.py:69
 msgid "PDF files"
-msgstr "File PDF"
+msgstr ""
 
 #: src/ui/utils/file_dialogs.py:77
 msgid "Images"
-msgstr "Immagini"
+msgstr ""
 
 #: src/ui/utils/file_dialogs.py:94
 msgid "The selected file is not available as a local path."
-msgstr "Il file selezionato non è disponibile come percorso locale."
+msgstr ""
 
 #: src/ui/utils/pdfgenerator.py:105
 msgid "PDF export completed without writing an output file."
-msgstr "Esportazione PDF completata senza aver scritto un file di output."
+msgstr ""
 
 #: src/ui/utils/pdfgenerator.py:115
 msgid "No answer key available"
-msgstr "Nessuna chiave delle risposte disponibile"
+msgstr ""
 
 #: src/ui/utils/pdfgenerator.py:116
 msgid "Answer Key"
-msgstr "Chiave delle risposte"
+msgstr ""
 
 #: src/ui/utils/pdfgenerator.py:118
 #, python-brace-format
 msgid "Q{number}:"
-msgstr "D{number}:"
+msgstr ""
 
 #: src/ui/utils/pdfgenerator.py:124
 msgid "No printable questions available."
-msgstr "Nessuna domanda stampabile disponibile."
+msgstr ""
 
 #: src/ui/utils/pdfgenerator.py:463
 msgid "No printable flashcards available."
@@ -527,11 +528,11 @@ msgstr ""
 
 #: src/ui/window.blp:23 src/ui/window.blp:48
 msgid "New Quiz"
-msgstr "Nuovo quiz"
+msgstr ""
 
 #: src/ui/window.blp:31
 msgid "Main Menu"
-msgstr "Menu principale"
+msgstr ""
 
 #: src/ui/window.blp:38
 msgid "No Study Sets Yet"
@@ -563,11 +564,11 @@ msgstr ""
 
 #: src/ui/window.blp:125
 msgid "Keyboard Shortcuts"
-msgstr "Scorciatoie da tastiera"
+msgstr ""
 
 #: src/ui/window.blp:130
 msgid "About Quizbite"
-msgstr "Informazioni su Quizbite"
+msgstr ""
 
 #: src/ui/window.py:179
 msgid "Export APKG"
@@ -575,7 +576,7 @@ msgstr ""
 
 #: src/ui/window.py:185 src/ui/window.py:213 src/ui/window.py:418
 msgid "Export PDF"
-msgstr "Esporta PDF"
+msgstr ""
 
 #: src/ui/window.py:191
 msgid "Delete Flashcards"
@@ -583,11 +584,11 @@ msgstr ""
 
 #: src/ui/window.py:207 src/ui/window.py:341
 msgid "Share Quiz"
-msgstr "Condividi quiz"
+msgstr ""
 
 #: src/ui/window.py:219
 msgid "Delete Quiz"
-msgstr "Elimina quiz"
+msgstr ""
 
 #: src/ui/window.py:257
 msgid "Quiz Mode Unavailable"
@@ -595,11 +596,11 @@ msgstr ""
 
 #: src/ui/window.py:270
 msgid "Import"
-msgstr "Importa"
+msgstr ""
 
 #: src/ui/window.py:280 src/ui/window.py:299
 msgid "Import Failed"
-msgstr "Importazione fallita"
+msgstr ""
 
 #: src/ui/window.py:308
 msgid "Edit Failed"
@@ -623,11 +624,11 @@ msgstr ""
 
 #: src/ui/window.py:359 src/ui/window.py:371
 msgid "Share Failed"
-msgstr "Condivisione fallita"
+msgstr ""
 
 #: src/ui/window.py:367
 msgid "Quiz could not be loaded for export."
-msgstr "Impossibile caricare il quiz per l'esportazione."
+msgstr ""
 
 #: src/ui/window.py:378
 msgid "Export Flashcards"
@@ -636,7 +637,7 @@ msgstr ""
 #: src/ui/window.py:399 src/ui/window.py:411 src/ui/window.py:464
 #: src/ui/window.py:480 src/ui/window.py:533 src/ui/window.py:549
 msgid "Export Failed"
-msgstr "Esportazione fallita"
+msgstr ""
 
 #: src/ui/window.py:407
 msgid "Flashcards could not be loaded for export."
@@ -644,32 +645,32 @@ msgstr ""
 
 #: src/ui/window.py:419
 msgid "Choose whether the exported PDF should include the answer key."
-msgstr "Scegli se il PDF esportato deve includere la chiave delle risposte."
+msgstr ""
 
 #: src/ui/window.py:421 src/ui/window.py:490 src/ui/window.py:561
 #: src/ui/window.py:587
 msgid "Cancel"
-msgstr "Annulla"
+msgstr ""
 
 #: src/ui/window.py:422
 msgid "Without Answer Key"
-msgstr "Senza chiave delle risposte"
+msgstr ""
 
 #: src/ui/window.py:423
 msgid "With Answer Key"
-msgstr "Con chiave delle risposte"
+msgstr ""
 
 #: src/ui/window.py:436
 msgid "Export Quiz PDF"
-msgstr "Esporta quiz in PDF"
+msgstr ""
 
 #: src/ui/window.py:437 src/ui/window.py:506
 msgid "Export"
-msgstr "Esporta"
+msgstr ""
 
 #: src/ui/window.py:472
 msgid "Quiz could not be loaded for PDF export."
-msgstr "Impossibile caricare il quiz per l'esportazione in PDF."
+msgstr ""
 
 #: src/ui/window.py:487 src/ui/window.py:505
 msgid "Export Flashcard PDF"
@@ -697,71 +698,17 @@ msgstr ""
 
 #: src/ui/window.py:556
 msgid "Delete Quiz?"
-msgstr "Eliminare il quiz?"
+msgstr ""
 
 #: src/ui/window.py:557 src/ui/window.py:583
 #, python-brace-format
 msgid "\"{title}\" will be removed from your library."
-msgstr "\"{title}\" verrà rimosso dalla tua libreria."
+msgstr ""
 
 #: src/ui/window.py:562 src/ui/window.py:588
 msgid "Delete"
-msgstr "Elimina"
+msgstr ""
 
 #: src/ui/window.py:582
 msgid "Delete Flashcards?"
 msgstr ""
-
-#~ msgid "GTK;"
-#~ msgstr "GTK;"
-
-#~ msgid "Create and play quizzes"
-#~ msgstr "Crea e gioca ai quiz"
-
-#~ msgid ""
-#~ "Create quizzes with multiple choice questions. Add an optional image per "
-#~ "question. Export quizzes to PDF."
-#~ msgstr ""
-#~ "Crea quiz con domande a scelta multipla. Aggiungi un'immagine opzionale "
-#~ "per ogni domanda. Esporta i quiz in PDF."
-
-#~ msgid "Import and export quiz files. Keep a local quiz library."
-#~ msgstr ""
-#~ "Importa ed esporta file di quiz. Mantieni una libreria di quiz locale."
-
-#~ msgid "mohfy"
-#~ msgstr "mohfy"
-
-#~ msgid "First release."
-#~ msgstr "Prima versione."
-
-#~ msgctxt "shortcut window"
-#~ msgid "Create Quiz"
-#~ msgstr "Crea quiz"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Import Quiz"
-#~ msgstr "Importa quiz"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Quit"
-#~ msgstr "Esci"
-
-#, python-brace-format
-#~ msgid "{answered} of {total} answered"
-#~ msgstr "{answered} di {total} risposte"
-
-#~ msgid "Quiz actions"
-#~ msgstr "Azioni quiz"
-
-#~ msgid "Import Quiz"
-#~ msgstr "Importa quiz"
-
-#~ msgid "No Quizzes Yet"
-#~ msgstr "Nessun quiz disponibile"
-
-#~ msgid "Create a quiz to get started, or import one that you already have."
-#~ msgstr "Crea un quiz per iniziare, oppure importane uno che già possiedi."
-
-#~ msgid "Quizzes"
-#~ msgstr "Quiz"
